@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '../ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '../ui/label';
 import {
@@ -17,16 +16,19 @@ import { toast } from 'sonner';
 import { supplierSchema } from '@/lib/validationSchemas';
 import { addSupplier } from '@/lib/actions';
 import { SubmitButton } from './submitButton';
+import { createRef } from 'react';
 
 const mainPorts = {
   china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
   indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
   vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
-  malaysia: ['Port Klang', 'Penang', 'Johor Port', 'Kuantan', 'Bintulu'],
+  malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
   india: ['Mumbai', 'Nhava Sheva', 'Kolkata', 'Visakhapatnam', 'Kochi'],
 };
 
 export function NewSupplierForm() {
+  const ref = createRef<HTMLFormElement>();
+
   const clientAction = async (formData: FormData) => {
     const supplierData = {
       name: formData.get('name'),
@@ -53,12 +55,19 @@ export function NewSupplierForm() {
         toast.error(response.error);
       } else {
         toast.success('Supplier saved successfully!');
+        if (ref.current) {
+          ref.current.reset();
+        }
       }
     }
   };
 
   return (
-    <form action={clientAction} className='space-y-8 w-full lg:max-w-4xl'>
+    <form
+      ref={ref}
+      action={clientAction}
+      className='space-y-8 w-full lg:max-w-4xl'
+    >
       <div className='flex items-center gap-x-3 justify-start'>
         <div className='w-3/4'>
           <Label htmlFor='name'>Name</Label>
