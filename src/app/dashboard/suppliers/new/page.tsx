@@ -10,7 +10,7 @@ export default function NewSupplier() {
         <h2 className='text-2xl font-bold tracking-tight'>New Supplier</h2>
         <p className='text-gray-600'>Supplier data and preferences.</p>
       </div>
-      <Separator />
+      <Separator className='w-full lg:max-w-4xl' />
       <NewSupplierForm />
     </div>
   );
