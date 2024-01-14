@@ -27,6 +27,10 @@ const supplierSchema = new mongoose.Schema({
   notes: {
     type: String,
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 // Check if the model already exists before defining it

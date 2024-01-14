@@ -2,6 +2,7 @@ import { Separator } from '@/components/ui/separator';
 import dbConnect from '@/lib/database/dbConnect';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import { SuppliersTable } from '@/components/suppliersTable';
+import { columns } from './columns';
 
 export default async function Page() {
   async function getAllSuppliers() {
@@ -29,7 +30,7 @@ export default async function Page() {
         <p className='text-gray-600'>All suppliers data.</p>
       </div>
       <Separator />
-      <SuppliersTable data={result.data} />
+      <SuppliersTable data={result?.data || []} columns={columns} />
     </div>
   );
 }

@@ -41,8 +41,6 @@ export function NewSupplierForm() {
       notes: formData.get('notes'),
     };
 
-    console.log(supplierData);
-
     // Client side validation
     const validation = supplierSchema.safeParse(supplierData);
     if (!validation.success) {

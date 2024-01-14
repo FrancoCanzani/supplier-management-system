@@ -3,8 +3,6 @@
 import { Separator } from '@radix-ui/react-select';
 import { Input } from './ui/input';
 import { useState } from 'react';
-import { Supplier } from '@/lib/types';
-import { Button } from './ui/button';
 import {
   Table,
   TableBody,
@@ -13,14 +11,34 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import Link from 'next/link';
 
-export function SuppliersTable({ data }: { data: Supplier[] | undefined }) {
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}
+
+export function SuppliersTable<TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   const [filter, setFilter] = useState('');
 
   const allSuppliers = data;
 
-  if (allSuppliers == undefined) {
+  if (allSuppliers == undefined || allSuppliers.length == 0) {
     return (
       <div className='w-full text-center py-6'>
         No suppliers found.{' '}
@@ -34,12 +52,6 @@ export function SuppliersTable({ data }: { data: Supplier[] | undefined }) {
     );
   }
 
-  const regex = new RegExp(filter, 'i');
-
-  const matchingSuppliers = allSuppliers.filter((supplier: Supplier) =>
-    regex.test(supplier.name)
-  );
-
   return (
     <div>
       <Input
@@ -51,35 +63,44 @@ export function SuppliersTable({ data }: { data: Supplier[] | undefined }) {
       <Separator />
       <Table className='mt-4'>
         <TableHeader>
-          <TableRow>
-            <TableHead className='w-[150px]'>Account ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Country</TableHead>
-            <TableHead>Port</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {matchingSuppliers.map((supplier) => (
-            <TableRow key={supplier._id}>
-              <TableCell className='font-medium'>{supplier.account}</TableCell>
-              <TableCell className='capitalize font-semibold'>
-                {/* todo: make a link to a new page to see supplier data */}
-                {supplier.name}
-              </TableCell>
-              <TableCell className='capitalize'>{supplier.country}</TableCell>
-              <TableCell className='capitalize'>{supplier.port}</TableCell>
-              <TableCell className='capitalize'>
-                <Button variant={'secondary'} size={'sm'}>
-                  Edit
-                </Button>
-              </TableCell>
-              <TableCell className='capitalize'>
-                <Button variant={'destructive'} size={'sm'}>
-                  Delete
-                </Button>
-              </TableCell>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
             </TableRow>
           ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className='h-24 text-center'>
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </div>
