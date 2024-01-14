@@ -12,4 +12,14 @@ interface Supplier {
   __v: number;
 }
 
-export type { Supplier };
+interface TaskProps {
+  supplier: String;
+  title: FormDataEntryValue;
+  label: FormDataEntryValue;
+  date: FormDataEntryValue;
+  priority: FormDataEntryValue;
+  comments?: FormDataEntryValue;
+  status?: FormDataEntryValue;
+}
+
+export type { Supplier, TaskProps };

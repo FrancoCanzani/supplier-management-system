@@ -1,10 +1,11 @@
 'use server';
 
-import { supplierSchema } from './validationSchemas';
 import { Supplier } from './database/schemas/supplierSchema';
 import dbConnect from './database/dbConnect';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
+import { Task } from './database/schemas/taskSchema';
+import { TaskProps } from './types';
 
 async function addSupplier(formData: FormData) {
   const db = await dbConnect();
@@ -20,23 +21,9 @@ async function addSupplier(formData: FormData) {
     notes: formData.get('notes'),
   };
 
-  const validation = supplierSchema.safeParse(supplierData);
-  if (!validation.success) {
-    let errorMessage = '';
-    validation.error.issues.map(
-      (issue) =>
-        (errorMessage =
-          errorMessage + issue.path[0] + ': ' + issue.message + '. ')
-    );
-
-    return {
-      error: errorMessage,
-    };
-  }
-
   const { name, account } = supplierData;
 
-  // Check if the supplier account exists (don't throw an error if both are 0)
+  // Check if the supplier account exists
   if (account) {
     const existingSupplier = await Supplier.findOne({ name, account });
     if (existingSupplier) {
@@ -88,4 +75,24 @@ async function deleteSupplier(
   }
 }
 
-export { addSupplier, deleteSupplier };
+async function addTask(taskData: TaskProps) {
+  const db = await dbConnect();
+
+  try {
+    const newTask = new Task(taskData);
+    const savedTask = await newTask.save();
+    revalidatePath('/dashboard');
+
+    return {
+      success: true,
+      data: savedTask,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error: 'Error adding supplier to the database',
+    };
+  }
+}
+
+export { addSupplier, deleteSupplier, addTask };

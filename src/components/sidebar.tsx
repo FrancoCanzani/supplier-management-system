@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 import Link from 'next/link';
 
@@ -7,7 +6,7 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Sidebar({ className }: SidebarProps) {
   return (
-    <div className={cn('pb-12', className)}>
+    <nav className={cn('', className)}>
       <div className='space-y-4 py-4'>
         <div className='px-3 py-2'>
           <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>
@@ -35,7 +34,10 @@ export function Sidebar({ className }: SidebarProps) {
               </svg>
               All Tasks
             </Link>
-            <Button variant='ghost' className='w-full justify-start'>
+            <Link
+              href={'/dashboard/tasks/new'}
+              className='inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 w-full justify-start'
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 width='1em'
@@ -49,7 +51,7 @@ export function Sidebar({ className }: SidebarProps) {
                 />
               </svg>
               New Task
-            </Button>
+            </Link>
           </div>
         </div>
         <div className='px-3 py-2'>
@@ -107,6 +109,6 @@ export function Sidebar({ className }: SidebarProps) {
           </h2>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

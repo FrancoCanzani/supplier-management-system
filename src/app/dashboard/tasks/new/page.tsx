@@ -1,10 +1,9 @@
 import { Separator } from '@/components/ui/separator';
+import { NewTaskForm } from '@/components/forms/newTaskForm';
 import dbConnect from '@/lib/database/dbConnect';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
-import { SuppliersTable } from '@/components/suppliersTable';
-import { columns } from './columns';
 
-export default async function Page() {
+export default async function NewTask() {
   async function getAllSuppliers() {
     const db = await dbConnect();
 
@@ -21,14 +20,15 @@ export default async function Page() {
     }
   }
   const result = await getAllSuppliers();
+
   return (
     <div className='space-y-6 p-10 pb-16'>
       <div className='space-y-0.5'>
-        <h2 className='text-2xl font-bold tracking-tight'>All Suppliers</h2>
-        <p className='text-gray-600'>All suppliers data.</p>
+        <h2 className='text-2xl font-bold tracking-tight'>New Task</h2>
+        <p className='text-gray-600'>Turn your ideas into actions.</p>
       </div>
-      <Separator />
-      <SuppliersTable data={result?.data || []} columns={columns} />
+      <Separator className='w-full lg:max-w-4xl' />
+      <NewTaskForm suppliers={result.data ?? []} />
     </div>
   );
 }

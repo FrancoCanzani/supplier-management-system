@@ -11,4 +11,13 @@ const supplierSchema = object({
   notes: string().trim().optional(),
 });
 
-export { supplierSchema };
+const taskSchema = object({
+  supplier: string().min(3),
+  title: string().min(3).optional(),
+  label: string().optional(),
+  date: string().optional(),
+  priority: string().optional(),
+  comments: string().optional(),
+});
+
+export { supplierSchema, taskSchema };
