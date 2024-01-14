@@ -8,7 +8,7 @@ interface Supplier {
   country: string;
   port: string;
   notes: string;
-  status: boolean;
+  active: boolean;
   __v: number;
 }
 

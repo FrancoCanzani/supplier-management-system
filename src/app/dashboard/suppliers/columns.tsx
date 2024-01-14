@@ -1,9 +1,10 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
 import { Supplier } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,19 +22,79 @@ export const columns: ColumnDef<Supplier>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Name
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: 'country',
-    header: 'Country',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Country
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className='capitalize'>{row.original.country}</div>,
   },
   {
     accessorKey: 'port',
-    header: 'Port',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Port
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className='capitalize'>{row.original.port}</div>,
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'active',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Status
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div>
+        <span
+          className={cn(
+            'p-2 font-medium rounded-md',
+            row.original.active
+              ? 'text-green-800 bg-green-50'
+              : 'text-gray-700 bg-gray-100'
+          )}
+        >
+          {row.original.active ? 'Active' : 'Inactive'}
+        </span>
+      </div>
+    ),
   },
   {
     id: 'actions',

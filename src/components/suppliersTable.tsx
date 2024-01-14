@@ -13,11 +13,15 @@ import {
 } from '@/components/ui/table';
 import {
   ColumnDef,
+  ColumnFiltersState,
+  SortingState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import Link from 'next/link';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,38 +32,36 @@ export function SuppliersTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const table = useReactTable({
     data,
     columns,
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
+    },
   });
-
-  const [filter, setFilter] = useState('');
-
-  const allSuppliers = data;
-
-  if (allSuppliers == undefined || allSuppliers.length == 0) {
-    return (
-      <div className='w-full text-center py-6'>
-        No suppliers found.{' '}
-        <Link
-          href={'/dashboard/suppliers/new'}
-          className='underline font-medium'
-        >
-          Add one.
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <div>
-      <Input
-        placeholder='Filter suppliers...'
-        className='max-w-2xl'
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-      />
+      <div className='flex items-center py-4'>
+        <Input
+          placeholder='Filter supplier...'
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          onChange={(event) =>
+            table.getColumn('name')?.setFilterValue(event.target.value)
+          }
+          className='max-w-sm'
+        />
+      </div>
       <Separator />
       <Table className='mt-4'>
         <TableHeader>
