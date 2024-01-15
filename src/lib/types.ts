@@ -22,4 +22,16 @@ interface TaskProps {
   status?: FormDataEntryValue;
 }
 
-export type { Supplier, TaskProps };
+type Task = {
+  _id: string;
+  supplier: string;
+  title: string;
+  label: string;
+  date: Date;
+  priority: 'high' | 'medium' | 'low';
+  comments: string;
+  status: string;
+  __v: number;
+};
+
+export type { Supplier, TaskProps, Task };

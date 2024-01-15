@@ -63,7 +63,7 @@ export function SuppliersTable<TData, TValue>({
         />
       </div>
       <Separator />
-      <Table className='mt-4'>
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
