@@ -61,7 +61,7 @@ export function TasksTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn('supplier')?.setFilterValue(event.target.value)
           }
-          className='max-w-sm'
+          className='max-w-sm h-9'
         />
       </div>
       <Separator />

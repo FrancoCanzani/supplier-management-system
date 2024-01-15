@@ -1,4 +1,4 @@
-import { object, string, number } from 'zod';
+import { object, string, number, z } from 'zod';
 
 const supplierSchema = object({
   name: string().trim(),

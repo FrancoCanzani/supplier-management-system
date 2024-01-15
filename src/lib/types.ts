@@ -16,7 +16,7 @@ interface TaskProps {
   supplier: String;
   title: FormDataEntryValue;
   label: FormDataEntryValue;
-  date: FormDataEntryValue;
+  date: FormDataEntryValue | string;
   priority: FormDataEntryValue;
   comments?: FormDataEntryValue;
   status?: FormDataEntryValue;
