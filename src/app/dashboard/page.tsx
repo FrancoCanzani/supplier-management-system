@@ -3,6 +3,7 @@ import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
 import { TasksTable } from '@/components/tasksTable';
 import { columns } from './columns';
+import { getServerSession } from 'next-auth';
 
 export default async function Dashboard() {
   async function getAllTasks() {

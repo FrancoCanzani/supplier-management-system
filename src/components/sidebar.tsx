@@ -1,6 +1,9 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -103,10 +106,16 @@ export function Sidebar({ className }: SidebarProps) {
             </ScrollArea>
           </div>
         </div>
-        <div className='py-2'>
-          <h2 className='relative px-7 text-lg font-semibold tracking-tight'>
+        <div className='px-3 py-2'>
+          <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>
             Settings
           </h2>
+          <button
+            onClick={() => signOut()}
+            className='inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-red-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 w-full justify-start'
+          >
+            Sign Out
+          </button>
         </div>
       </div>
     </nav>
