@@ -1,8 +1,7 @@
 'use client';
 
-import { Separator } from '@radix-ui/react-select';
-import { Input } from './ui/input';
 import { useState } from 'react';
+import { DataTableToolbar } from './dataTableToolbar';
 import {
   Table,
   TableBody,
@@ -15,8 +14,11 @@ import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -32,39 +34,36 @@ export function TasksTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      columnVisibility,
+      rowSelection,
       columnFilters,
     },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   return (
-    <div>
-      <div className='flex items-center py-4'>
-        <Input
-          placeholder='Filter supplier...'
-          value={
-            (table.getColumn('supplier')?.getFilterValue() as string) ?? ''
-          }
-          onChange={(event) =>
-            table.getColumn('supplier')?.setFilterValue(event.target.value)
-          }
-          className='max-w-sm h-9'
-        />
-      </div>
-      <Separator />
+    <div className='space-y-4'>
+      <DataTableToolbar table={table} data={data} />
       <div className='rounded-md border'>
         <Table>
           <TableHeader>

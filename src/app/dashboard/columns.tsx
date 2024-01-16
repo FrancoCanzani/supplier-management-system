@@ -1,7 +1,6 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { useOptimistic } from 'react';
 import { Task } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -35,6 +34,9 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => (
       <div className='capitalize font-semibold'>{row.original.supplier}</div>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: 'label',
@@ -55,6 +57,9 @@ export const columns: ColumnDef<Task>[] = [
         {row.original.label}
       </div>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: 'title',
@@ -115,6 +120,9 @@ export const columns: ColumnDef<Task>[] = [
         <span className={cn('capitalize')}>{row.original.priority}</span>
       </div>
     ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: 'status',
@@ -142,6 +150,9 @@ export const columns: ColumnDef<Task>[] = [
           />
         </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
