@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DataTablePagination } from './dataTablePagination';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -114,6 +115,7 @@ export function TasksTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }

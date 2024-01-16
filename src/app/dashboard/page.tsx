@@ -21,7 +21,6 @@ export default async function Dashboard() {
     }
   }
   const result = await getAllTasks();
-  console.log(result.data);
 
   return (
     <div className='space-y-6 p-10 pb-16'>
