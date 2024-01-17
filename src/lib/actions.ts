@@ -7,10 +7,11 @@ import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { TaskProps } from './types';
 
-async function addSupplier(formData: FormData) {
+async function addSupplier(formData: FormData, userId: string) {
   const db = await dbConnect();
 
   const supplierData = {
+    userId,
     name: formData.get('name'),
     account: Number(formData.get('account')),
     address: formData.get('address'),
@@ -25,7 +26,7 @@ async function addSupplier(formData: FormData) {
 
   // Check if the supplier account exists
   if (account) {
-    const existingSupplier = await Supplier.findOne({ name, account });
+    const existingSupplier = await Supplier.findOne({ userId, name, account });
     if (existingSupplier) {
       return {
         error: 'Supplier with the same account already exists',
@@ -144,11 +145,11 @@ async function updateTaskStatus(
   }
 }
 
-async function addTask(taskData: TaskProps) {
+async function addTask(taskData: TaskProps, userId: string) {
   const db = await dbConnect();
 
   try {
-    const newTask = new Task(taskData);
+    const newTask = new Task({ ...taskData, userId });
     const savedTask = await newTask.save();
     revalidatePath('/dashboard');
 
@@ -159,7 +160,7 @@ async function addTask(taskData: TaskProps) {
   } catch (error) {
     console.log(error);
     return {
-      error: 'Error adding supplier to the database',
+      error: 'Error adding task to the database',
     };
   }
 }

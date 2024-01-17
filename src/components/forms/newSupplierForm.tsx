@@ -17,6 +17,7 @@ import { supplierSchema } from '@/lib/validationSchemas';
 import { addSupplier } from '@/lib/actions';
 import { SubmitButton } from './submitButton';
 import { createRef } from 'react';
+import { useSession } from 'next-auth/react';
 
 const mainPorts = {
   china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
@@ -27,6 +28,8 @@ const mainPorts = {
 };
 
 export function NewSupplierForm() {
+  const session = useSession();
+
   const ref = createRef<HTMLFormElement>();
 
   const clientAction = async (formData: FormData) => {
@@ -48,13 +51,15 @@ export function NewSupplierForm() {
         toast.error(issue.path[0] + ': ' + issue.message)
       );
     } else {
-      const response = await addSupplier(formData);
-      if (response?.error) {
-        toast.error(response.error);
-      } else {
-        toast.success('Supplier saved successfully!');
-        if (ref.current) {
-          ref.current.reset();
+      if (session.data && session.data.user) {
+        const response = await addSupplier(formData, session.data.user.id);
+        if (response?.error) {
+          toast.error(response.error);
+        } else {
+          toast.success('Supplier saved successfully!');
+          if (ref.current) {
+            ref.current.reset();
+          }
         }
       }
     }

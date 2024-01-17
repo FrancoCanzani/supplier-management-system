@@ -26,6 +26,10 @@ const taskSchema = new mongoose.Schema({
     type: String,
     default: 'open',
   },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 export const Task = mongoose.models.Task || mongoose.model('Task', taskSchema);

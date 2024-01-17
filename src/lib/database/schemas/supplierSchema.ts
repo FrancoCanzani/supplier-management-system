@@ -30,6 +30,10 @@ const supplierSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
 // Check if the model already exists before defining it
