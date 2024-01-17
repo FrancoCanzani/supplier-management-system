@@ -3,10 +3,11 @@ import dbConnect from '@/lib/database/dbConnect';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import { SuppliersTable } from '@/components/suppliersTable';
 import { columns } from './columns';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { auth } from '@clerk/nextjs';
 
 export default async function Page() {
+  const { userId } = auth();
+
   async function getAllSuppliers(userId: string) {
     const db = await dbConnect();
 
@@ -22,10 +23,9 @@ export default async function Page() {
       };
     }
   }
-  const session = await getServerSession(authOptions);
 
-  if (session && session.user) {
-    const userSuppliersResult = await getAllSuppliers(session.user.id);
+  if (userId) {
+    const userSuppliersResult = await getAllSuppliers(userId);
 
     return (
       <div className='space-y-6 p-10 pb-16'>

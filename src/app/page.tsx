@@ -2,37 +2,36 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { SignInButton } from '@clerk/nextjs';
 
 export default function AuthenticationPage() {
-  const { data } = useSession();
-
-  // if (session) {
-  //   redirect('/dashboard');
-  // }
-
   return (
-    <main className='flex h-screen'>
-      <div className='relative hidden lg:block lg:w-1/2 h-screen'>
+    <main className='flex flex-col lg:flex-row h-screen'>
+      <div className='relative h-1/2 lg:w-1/2 lg:h-screen'>
         <Image
           src='/vessel.jpg'
           alt='Vessel'
           fill
           priority
           quality={100}
-          className='object-cover object-[-16px] sm:object-center'
+          className='object-cover lg:object-[-16px] sm:object-center'
         />
       </div>
-      <div className='mx-auto flex flex-col justify-center space-y-6 w-full lg:w-1/2'>
-        <div className='flex flex-col space-y-2 text-center'>
-          <h1 className='text-2xl font-semibold tracking-tight'>
+      <div className='mx-auto flex flex-col h-1/2 lg:w-1/2 lg:h-screen justify-center items-center space-y-6 w-full'>
+        <h1 className='text-4xl lg:text-5xl mb-8 text-center font-semibold tracking-tight'>
+          Supplier Management System
+        </h1>
+        <SignInButton mode='modal'>
+          <Button
+            variant={'link'}
+            className='text-2xl font-semibold tracking-tight'
+          >
             Sign In to your account
-          </h1>
-        </div>
-        <button onClick={() => signIn()}>Sign in</button>
-        <p className='px-8 text-center text-sm text-muted-foreground'>
-          By clicking continue, you agree to our{' '}
+          </Button>
+        </SignInButton>{' '}
+        <p className='px-8 max-w-4xl text-center text-sm text-muted-foreground'>
+          By clicking, you agree to our{' '}
           <Link
             href={'#'}
             className='underline underline-offset-4 hover:text-primary'

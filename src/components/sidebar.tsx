@@ -2,7 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import { UserButton } from '@clerk/nextjs';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -11,9 +11,10 @@ export function Sidebar({ className }: SidebarProps) {
     <nav className={cn('', className)}>
       <div className='space-y-4 py-4'>
         <div className='px-3 py-2'>
-          <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>
-            Tasks
-          </h2>
+          <div className='mb-2 flex items-center justify-between px-4 text-lg font-semibold tracking-tight'>
+            <h2>Tasks</h2>
+            <UserButton afterSignOutUrl='/' />
+          </div>
           <div className='space-y-1'>
             <Link
               href={'/dashboard'}
@@ -101,29 +102,6 @@ export function Sidebar({ className }: SidebarProps) {
               New Supplier
             </Link>
           </div>
-        </div>
-        <div className='px-3 py-2'>
-          <h2 className='mb-2 px-4 text-lg font-semibold tracking-tight'>
-            Settings
-          </h2>
-          <button
-            onClick={() => signOut()}
-            className='inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-red-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 w-full justify-start'
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              width='1em'
-              height='1em'
-              viewBox='0 0 24 24'
-              className='mr-2 h-4 w-4'
-            >
-              <path
-                fill='currentColor'
-                d='M3 3.25c0-.966.784-1.75 1.75-1.75h5.5a.75.75 0 0 1 0 1.5h-5.5a.25.25 0 0 0-.25.25v17.5c0 .138.112.25.25.25h5.5a.75.75 0 0 1 0 1.5h-5.5A1.75 1.75 0 0 1 3 20.75Zm16.006 9.5H10.75a.75.75 0 0 1 0-1.5h8.256l-3.3-3.484a.75.75 0 0 1 1.088-1.032l4.5 4.75a.75.75 0 0 1 0 1.032l-4.5 4.75a.75.75 0 0 1-1.088-1.032Z'
-              />
-            </svg>
-            Sign Out
-          </button>
         </div>
       </div>
     </nav>

@@ -3,11 +3,16 @@ import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
 import { TasksTable } from '@/components/tasksTable';
 import { columns } from './columns';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
+  const { userId } = auth();
+
+  if (!userId) {
+    redirect('/');
+  }
+
   async function getAllTasks(userId: string) {
     const db = await dbConnect();
 
@@ -24,10 +29,8 @@ export default async function Dashboard() {
     }
   }
 
-  const session = await getServerSession(authOptions);
-
-  if (session && session.user) {
-    const userTasksResult = await getAllTasks(session.user.id);
+  if (userId) {
+    const userTasksResult = await getAllTasks(userId);
 
     return (
       <div className='space-y-6 p-10 pb-16'>

@@ -20,14 +20,14 @@ import { DataSelector } from '../dataSelector';
 import { Supplier } from '@/lib/types';
 import { useState } from 'react';
 import { addTask } from '@/lib/actions';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@clerk/nextjs';
 
 export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
   const [selectedSupplier, setSelectedSupplier] = useState<string>('');
 
   const today = new Date().toISOString().split('T')[0];
   const ref = createRef<HTMLFormElement>();
-  const session = useSession();
+  const { userId } = useAuth();
 
   const clientAction = async (formData: FormData) => {
     const taskData = {
@@ -46,8 +46,8 @@ export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
         toast.error(issue.path[0] + ': ' + issue.message)
       );
     } else {
-      if (session.data && session.data.user) {
-        const response = await addTask(taskData, session.data?.user?.id);
+      if (userId) {
+        const response = await addTask(taskData, userId);
         if (response?.error) {
           toast.error(response.error);
         } else {
