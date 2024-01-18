@@ -1,9 +1,17 @@
 import mongoose from 'mongoose';
 
+import { nanoid } from 'nanoid';
+
 const supplierSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+  },
+  id: {
+    type: String,
+    required: true,
+    default: () => nanoid(7),
+    index: { unique: true },
   },
   account: {
     type: Number,

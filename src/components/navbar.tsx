@@ -2,25 +2,17 @@
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import Image from 'next/image';
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function Navbar({ className }: SidebarProps) {
   return (
     <aside className={cn('', className)}>
-      {/* <Image
-          src={'/logo.jpg'}
-          className='rounded-lg'
-          width={30}
-          height={30}
-          alt='Logo'
-        /> */}
       <nav className='space-y-4 py-4'>
         <div className='px-3 py-2'>
           <Link
-            href={'/'}
-            className='inline-flex text-xl items-center whitespace-nowrap rounded-md font-bold ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 justify-start'
+            href={'/dashboard'}
+            className='inline-flex text-lg md:text-xl items-center rounded-md font-bold ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 justify-start'
           >
             Supplier Management
           </Link>

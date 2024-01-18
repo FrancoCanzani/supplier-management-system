@@ -22,7 +22,7 @@ import { Supplier } from '@/lib/types';
 interface ComboboxProps {
   data: Supplier[];
   placeholder: string;
-  onSelect: (value: string) => void; // Add a prop for onSelect callback
+  onSelect: (selectedSupplier: { name: string; id: string }) => void;
 }
 
 export function DataSelector({ data, placeholder, onSelect }: ComboboxProps) {
@@ -51,10 +51,14 @@ export function DataSelector({ data, placeholder, onSelect }: ComboboxProps) {
               <CommandItem
                 key={supplier._id}
                 value={supplier.name}
-                onSelect={(currentValue: string) => {
-                  setValue(currentValue);
+                onSelect={() => {
+                  const selectedSupplier = {
+                    name: supplier.name,
+                    id: supplier.id,
+                  };
+                  setValue(supplier.name);
                   setOpen(false);
-                  onSelect(currentValue);
+                  onSelect(selectedSupplier);
                 }}
               >
                 <Check

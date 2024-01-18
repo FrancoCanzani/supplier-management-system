@@ -27,7 +27,7 @@ export default function AuthenticationPage() {
             variant={'link'}
             className='text-2xl font-semibold tracking-tight'
           >
-            Sign In to your account
+            Sign In to your account ↗
           </Button>
         </SignInButton>{' '}
         <p className='px-8 max-w-4xl text-center text-sm text-muted-foreground'>

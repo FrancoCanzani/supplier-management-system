@@ -23,7 +23,10 @@ import { addTask } from '@/lib/actions';
 import { useAuth } from '@clerk/nextjs';
 
 export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
-  const [selectedSupplier, setSelectedSupplier] = useState<string>('');
+  const [selectedSupplier, setSelectedSupplier] = useState<{
+    name: string;
+    id: string;
+  }>({ name: '', id: '' });
 
   const today = new Date().toISOString().split('T')[0];
   const ref = createRef<HTMLFormElement>();
@@ -31,7 +34,8 @@ export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
 
   const clientAction = async (formData: FormData) => {
     const taskData = {
-      supplier: selectedSupplier.toString(),
+      supplier: selectedSupplier.name.toString(),
+      supplierId: selectedSupplier.id.toString(),
       title: formData.get('title') ?? '',
       label: formData.get('label') ?? '',
       date: formData.get('date') ?? new Date().toISOString(),

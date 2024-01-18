@@ -1,6 +1,7 @@
 interface Supplier {
   _id: string;
   name: string;
+  id: string;
   account: number;
   address: string;
   phone: string;
@@ -25,6 +26,7 @@ interface TaskProps {
 type Task = {
   _id: string;
   supplier: string;
+  supplierId: string;
   title: string;
   label: string;
   date: Date;

@@ -2,6 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Task } from '@/lib/types';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
@@ -32,7 +33,12 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className='capitalize font-semibold'>{row.original.supplier}</div>
+      <Link
+        href={`dashboard/suppliers/${row.original.supplierId}`}
+        className='capitalize font-semibold hover:underline'
+      >
+        {row.original.supplier}
+      </Link>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
