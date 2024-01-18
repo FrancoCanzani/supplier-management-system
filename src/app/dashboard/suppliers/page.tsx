@@ -28,7 +28,7 @@ export default async function Page() {
     const userSuppliersResult = await getAllSuppliers(userId);
 
     return (
-      <div className='space-y-6 p-10 pb-16'>
+      <div className='space-y-6 px-10 pb-16'>
         <div className='space-y-0.5'>
           <h2 className='text-2xl font-bold tracking-tight'>All Suppliers</h2>
           <p className='text-gray-600'>All suppliers data.</p>
