@@ -8,9 +8,7 @@ import { Task } from '@/lib/database/schemas/taskSchema';
 import SupplierInformation from '@/components/supplierInformation';
 
 export async function generateStaticParams() {
-  const res = await fetch(
-    `https://suppliermanagementsystem.vercel.app/api/suppliers`
-  );
+  const res = await fetch(`${process.env.URL}/api/suppliers`);
 
   if (!res.ok) {
     throw new Error(`Failed to fetch data: ${res.statusText}`);

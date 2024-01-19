@@ -4,11 +4,21 @@ import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import dbConnect from '@/lib/database/dbConnect';
 
 export async function GET() {
-  const { userId } = auth();
+  try {
+    const { userId } = auth();
 
-  await dbConnect();
+    if (!userId) {
+      throw new Error('User ID not available.');
+    }
 
-  const suppliers = await Supplier.find({ userId });
+    await dbConnect();
 
-  return NextResponse.json(suppliers);
+    const suppliers = await Supplier.find({ userId });
+
+    return NextResponse.json(suppliers || {});
+  } catch (error: any) {
+    throw new Error(
+      'Error fetching suppliers: ' + (error.message || 'Unknown error')
+    );
+  }
 }
