@@ -9,6 +9,8 @@ interface Supplier {
   country: string;
   port: string;
   notes: string;
+  payment: string;
+  billing: string;
   active: boolean;
   __v: number;
 }
@@ -32,7 +34,7 @@ type Task = {
   date: Date;
   priority: 'high' | 'medium' | 'low';
   comments: string;
-  status: string;
+  status: 'open' | 'in progress' | 'closed';
   __v: number;
 };
 

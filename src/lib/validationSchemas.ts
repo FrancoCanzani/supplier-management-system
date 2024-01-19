@@ -8,6 +8,8 @@ const supplierSchema = object({
   email: string().trim().optional(),
   country: string().trim().optional(),
   port: string().trim().optional(),
+  payment: string().trim().optional(),
+  billing: string().trim().optional(),
   notes: string().trim().optional(),
 });
 

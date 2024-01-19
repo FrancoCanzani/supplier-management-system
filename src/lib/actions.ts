@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { TaskProps } from './types';
+import { Supplier as SupplierProps } from './types';
 
 async function addSupplier(formData: FormData, userId: string) {
   const db = await dbConnect();
@@ -19,6 +20,8 @@ async function addSupplier(formData: FormData, userId: string) {
     email: formData.get('email'),
     country: formData.get('country'),
     port: formData.get('port'),
+    payment: formData.get('payment'),
+    billing: formData.get('billing'),
     notes: formData.get('notes'),
   };
 
@@ -45,7 +48,47 @@ async function addSupplier(formData: FormData, userId: string) {
     };
   } catch (error) {
     return {
-      error: 'Error adding supplier to the database',
+      error: 'Error adding supplier.',
+    };
+  }
+}
+
+export async function updateSupplier(
+  supplierData: SupplierProps,
+  userId: string
+) {
+  const db = await dbConnect();
+
+  const { name, _id, id } = supplierData;
+
+  // Check if the document with the given _id exists
+  const existingSupplier = await Supplier.findById(_id);
+
+  if (!existingSupplier) {
+    return {
+      error: 'Supplier not found for update.',
+    };
+  }
+
+  try {
+    // Use findByIdAndUpdate to update the existing document
+    const updatedSupplier = await Supplier.findByIdAndUpdate(
+      _id,
+      { $set: supplierData },
+      { new: true, upsert: true }
+    );
+
+    revalidatePath(`/dashboard/suppliers/${id}`);
+
+    return {
+      success: true,
+      data: updatedSupplier,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      error: 'Error updating supplier.',
     };
   }
 }
@@ -127,8 +170,8 @@ async function updateTaskStatus(
     }
 
     if (taskToUpdate.status === 'open') {
-      taskToUpdate.status = 'paused';
-    } else if (taskToUpdate.status === 'paused') {
+      taskToUpdate.status = 'in progress';
+    } else if (taskToUpdate.status === 'in progress') {
       taskToUpdate.status = 'closed';
     } else if (taskToUpdate.status === 'closed') {
       taskToUpdate.status = 'open';
@@ -160,7 +203,7 @@ async function addTask(taskData: TaskProps, userId: string) {
   } catch (error) {
     console.log(error);
     return {
-      error: 'Error adding task to the database',
+      error: 'Error adding task.',
     };
   }
 }

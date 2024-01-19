@@ -38,6 +38,12 @@ const supplierSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  payment: {
+    type: String,
+  },
+  billing: {
+    type: String,
+  },
   userId: {
     type: String,
     required: true,

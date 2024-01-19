@@ -41,6 +41,8 @@ export function NewSupplierForm() {
       email: formData.get('email'),
       country: formData.get('country'),
       port: formData.get('port'),
+      payment: formData.get('payment'),
+      billing: formData.get('billing'),
       notes: formData.get('notes'),
     };
 
@@ -183,6 +185,26 @@ export function NewSupplierForm() {
             </SelectGroup>
           </SelectContent>
         </Select>
+      </div>
+      <div className='flex items-center gap-x-3 justify-start'>
+        <div className='w-1/2'>
+          <Label htmlFor='payment'>Payment terms</Label>
+          <Input
+            id='payment'
+            name='payment'
+            type='text'
+            placeholder='10 days after shipping'
+          />
+        </div>
+        <div className='w-1/2'>
+          <Label htmlFor='billing'>Billing information</Label>
+          <Input
+            id='billing'
+            name='billing'
+            type='text'
+            placeholder='JP Morgan - BKCHCNBJ110'
+          />
+        </div>
       </div>
       <div>
         <Label htmlFor='notes'>Notes</Label>

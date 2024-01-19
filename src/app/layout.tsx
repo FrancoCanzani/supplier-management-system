@@ -7,7 +7,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'SMS',
+  title: 'SMS - Supplier Management System',
   description: 'Supplier Management System',
 };
 

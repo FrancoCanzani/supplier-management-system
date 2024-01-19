@@ -1,7 +1,8 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Supplier } from '@/lib/types';
+import { Task } from '@/lib/types';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
@@ -13,17 +14,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { DeleteForm } from '@/components/forms/deleteForm';
-import Link from 'next/link';
+import { ClickAction } from '@/components/clickAction';
+import { deleteTask, updateTaskStatus } from '@/lib/actions';
 
-export const columns: ColumnDef<Supplier>[] = [
+export const columns: ColumnDef<Task>[] = [
   {
-    accessorKey: 'account',
-    header: 'Account Id',
-  },
-  {
-    accessorKey: 'name',
-
+    accessorKey: 'label',
     header: ({ column }) => {
       return (
         <Button
@@ -31,25 +27,22 @@ export const columns: ColumnDef<Supplier>[] = [
           className='p-0 hover:bg-inherit'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Name
+          Label
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <Link
-        href={`/dashboard/suppliers/${row.original.id}`}
-        className='capitalize font-semibold hover:underline'
-      >
-        {row.original.name}
-      </Link>
+      <div className='inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground'>
+        {row.original.label}
+      </div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
-    accessorKey: 'country',
+    accessorKey: 'title',
     header: ({ column }) => {
       return (
         <Button
@@ -57,15 +50,19 @@ export const columns: ColumnDef<Supplier>[] = [
           className='p-0 hover:bg-inherit'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Country
+          Title
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
-    cell: ({ row }) => <div className='capitalize'>{row.original.country}</div>,
+    cell: ({ row }) => (
+      <span className='max-w-[500px] truncate font-medium'>
+        {row.getValue('title')}
+      </span>
+    ),
   },
   {
-    accessorKey: 'port',
+    accessorKey: 'date',
     header: ({ column }) => {
       return (
         <Button
@@ -73,15 +70,42 @@ export const columns: ColumnDef<Supplier>[] = [
           className='p-0 hover:bg-inherit'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
-          Port
+          Deadline
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );
     },
-    cell: ({ row }) => <div className='capitalize'>{row.original.port}</div>,
+    cell: ({ row }) => (
+      <span className=''>
+        {new Date(row.original.date).toLocaleDateString(['ban', 'id'])}
+      </span>
+    ),
   },
   {
-    accessorKey: 'active',
+    accessorKey: 'priority',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Priority
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div>
+        <span className={cn('capitalize')}>{row.original.priority}</span>
+      </div>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: 'status',
     header: ({ column }) => {
       return (
         <Button
@@ -94,25 +118,27 @@ export const columns: ColumnDef<Supplier>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>
-        <span
-          className={cn(
-            'p-2 font-medium rounded-md',
-            row.original.active
-              ? 'text-green-800 bg-green-50'
-              : 'text-gray-700 bg-gray-100'
-          )}
-        >
-          {row.original.active ? 'Active' : 'Inactive'}
-        </span>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const task = row.original;
+      return (
+        <div>
+          <ClickAction
+            action={updateTaskStatus}
+            id={task._id}
+            name={task.title}
+            buttonText={task.status}
+          />
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     id: 'actions',
     cell: ({ row }) => {
-      const supplier = row.original;
+      const task = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -123,16 +149,14 @@ export const columns: ColumnDef<Supplier>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(supplier.account.toString())
-              }
-            >
-              Copy Account Id
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <DeleteForm id={supplier._id} name={supplier.name} />
+            <DropdownMenuItem className='font-medium'>
+              <ClickAction
+                action={deleteTask}
+                id={task._id}
+                name={task.title}
+                buttonText='Delete'
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

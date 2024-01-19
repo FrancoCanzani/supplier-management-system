@@ -4,8 +4,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { SignInButton } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 export default function AuthenticationPage() {
+  const { isLoaded, isSignedIn } = useAuth();
+
+  if (isLoaded && isSignedIn) {
+    redirect('/dashboard');
+  }
+
   return (
     <main className='flex flex-col lg:flex-row h-screen'>
       <div className='relative h-1/2 lg:w-1/2 lg:h-screen'>
