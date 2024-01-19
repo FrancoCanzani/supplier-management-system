@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import dbConnect from '@/lib/database/dbConnect';
+import { currentUser } from '@clerk/nextjs';
 
 export async function GET() {
   try {
-    const { userId } = auth();
+    const user = await currentUser();
 
-    if (!userId) {
+    if (!user) {
       throw new Error('User ID not available.');
     }
+
+    const userId = user.id;
 
     await dbConnect();
 
