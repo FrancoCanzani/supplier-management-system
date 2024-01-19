@@ -8,10 +8,10 @@ import { Task } from '@/lib/database/schemas/taskSchema';
 import SupplierInformation from '@/components/supplierInformation';
 
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.URL}/api/suppliers`);
+  const res = await fetch(`${process.env.VERCEL_URL}/api/suppliers`);
 
   if (!res.ok) {
-    throw new Error(`This is where the error is: ${res.statusText}`);
+    throw new Error(`Error: ${res.statusText}`);
   }
 
   const suppliers = await res.json();
