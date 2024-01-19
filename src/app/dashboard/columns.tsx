@@ -35,7 +35,7 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => (
       <Link
         href={`dashboard/suppliers/${row.original.supplierId}`}
-        className='capitalize font-semibold hover:underline'
+        className='capitalize max-w-[200px] truncate font-semibold hover:underline'
       >
         {row.original.supplier}
       </Link>

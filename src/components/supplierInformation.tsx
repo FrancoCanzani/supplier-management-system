@@ -19,7 +19,7 @@ import { SubmitButton } from './forms/submitButton';
 import { createRef, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { Supplier } from '@/lib/types';
-import { Button } from './ui/button';
+import { Switch } from './ui/switch';
 
 const mainPorts = {
   china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
@@ -82,14 +82,14 @@ export default function SupplierInformation({
     <section>
       <div className='flex items-center justify-between'>
         <SectionTitle title='Information' />
-        <Button
-          variant={'ghost'}
-          size={'sm'}
-          className='mb-6'
-          onClick={() => setIsEditing(!isEditing)}
-        >
-          Edit
-        </Button>
+        <div className='flex flex-row items-center justify-between rounded-lg border p-2 gap-x-3 mb-6'>
+          <p className='font-semibold'>Edit</p>
+          <Switch
+            className='h-6 w-11'
+            checked={isEditing}
+            onCheckedChange={() => setIsEditing(!isEditing)}
+          />
+        </div>
       </div>
       <form
         ref={ref}
