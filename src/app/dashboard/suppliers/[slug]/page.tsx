@@ -11,7 +11,7 @@ export async function generateStaticParams() {
   const res = await fetch(`${process.env.URL}/api/suppliers`);
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch data: ${res.statusText}`);
+    throw new Error(`This is where the error is: ${res.statusText}`);
   }
 
   const suppliers = await res.json();
