@@ -34,7 +34,7 @@ type Task = {
   date: Date;
   priority: 'high' | 'medium' | 'low';
   comments: string;
-  status: 'open' | 'in progress' | 'closed';
+  status: 'open' | 'in progress' | 'closed' | 'cancelled';
   __v: number;
 };
 

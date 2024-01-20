@@ -27,16 +27,20 @@ export default async function SupplierPage({
       </div>
       <Separator />
       <SupplierInformation supplier={supplier} />
-      <Separator />
-      <section>
-        <SectionTitle title='Tasks' />
-        <TasksTable columns={columns} data={tasks} />
-      </section>
-      <Separator />
-      <section>
-        <SectionTitle title='Analytics' />
-        <SupplierAnalytics tasks={tasks} />
-      </section>
+      {tasks.length && (
+        <>
+          <Separator />
+          <section>
+            <SectionTitle title='Tasks' />
+            <TasksTable columns={columns} data={tasks} />
+          </section>
+          <Separator />
+          <section>
+            <SectionTitle title='Analytics' />
+            <SupplierAnalytics tasks={tasks} />
+          </section>
+        </>
+      )}
     </div>
   );
 }

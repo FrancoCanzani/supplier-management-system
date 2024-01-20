@@ -141,6 +141,7 @@ async function deleteTask(
     revalidatePath('/dashboard');
     return { message: `Deleted task ${data.name}` };
   } catch (e) {
+    console.log(e);
     return { message: 'Failed to delete task' };
   }
 }
@@ -174,6 +175,8 @@ async function updateTaskStatus(
     } else if (taskToUpdate.status === 'in progress') {
       taskToUpdate.status = 'closed';
     } else if (taskToUpdate.status === 'closed') {
+      taskToUpdate.status = 'cancelled';
+    } else if (taskToUpdate.status === 'cancelled') {
       taskToUpdate.status = 'open';
     }
 
