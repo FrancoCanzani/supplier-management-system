@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header className='py-10 lg:py-4 px-4 h-16 flex items-center lg:justify-end justify-between'>
+    <header className='py-10 mb-8 lg:py-4 px-4 h-16 flex items-center lg:justify-end justify-between border-b'>
       <nav className='flex items-center justify-start lg:hidden'>
         <div className='px-3 py-2'>
           <Link

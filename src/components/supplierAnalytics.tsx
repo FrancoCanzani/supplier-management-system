@@ -96,7 +96,7 @@ export default function SupplierAnalytics({ tasks }: { tasks: Task[] }) {
         <BarList data={groupedTasksArray} className='mt-2' />
       </Card>
 
-      <Card className='max-w-md p-3'>
+      <Card className='max-w-md p-3 shadow-none'>
         <Title className='text-base'>Status</Title>
         <Text className='text-xs'>
           {tasks[0].supplier}&apos;s closed statuses

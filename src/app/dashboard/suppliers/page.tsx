@@ -1,10 +1,10 @@
 import { Separator } from '@/components/ui/separator';
 import dbConnect from '@/lib/database/dbConnect';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
-import { SuppliersTable } from '@/components/suppliersTable';
 import { columns } from './columns';
 import { auth } from '@clerk/nextjs';
 import Link from 'next/link';
+import { DataTable } from '@/components/dataTable';
 
 export default async function Page() {
   const { userId } = auth();
@@ -55,10 +55,9 @@ export default async function Page() {
           </Link>
         </div>
         <Separator />
-        <SuppliersTable
-          data={userSuppliersResult?.data || []}
-          columns={columns}
-        />
+        <div className='container mx-auto py-4'>
+          <DataTable data={userSuppliersResult?.data || []} columns={columns} />
+        </div>
       </div>
     );
   }

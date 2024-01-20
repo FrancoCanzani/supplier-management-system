@@ -1,7 +1,7 @@
 import { Supplier as SupplierProps } from '@/lib/types';
 import { getSupplier } from '@/lib/helpers/getSupplier';
 import { Separator } from '@/components/ui/separator';
-import { TasksTable } from '@/components/tasksTable';
+import { DataTable } from '@/components/dataTable';
 import { columns } from './columns';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
@@ -32,7 +32,9 @@ export default async function SupplierPage({
           <Separator />
           <section>
             <SectionTitle title='Tasks' />
-            <TasksTable columns={columns} data={tasks} />
+            <div className='container mx-auto py-4'>
+              <DataTable columns={columns} data={tasks} />
+            </div>
           </section>
           <Separator />
           <section>

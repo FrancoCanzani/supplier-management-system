@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
-import { TasksTable } from '@/components/tasksTable';
+import { DataTable } from '@/components/dataTable';
 import { columns } from './columns';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
@@ -60,7 +60,9 @@ export default async function Dashboard() {
           </Link>
         </div>
         <Separator />
-        <TasksTable columns={columns} data={userTasksResult.data ?? []} />
+        <div className='container mx-auto py-4'>
+          <DataTable columns={columns} data={userTasksResult.data ?? []} />
+        </div>
       </div>
     );
   }
