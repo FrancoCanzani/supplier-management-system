@@ -5,6 +5,7 @@ import { TasksTable } from '@/components/tasksTable';
 import { columns } from './columns';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
+import SupplierAnalytics from '@/components/supplierAnalytics';
 import SupplierInformation from '@/components/supplierInformation';
 
 export default async function SupplierPage({
@@ -30,6 +31,11 @@ export default async function SupplierPage({
       <section>
         <SectionTitle title='Tasks' />
         <TasksTable columns={columns} data={tasks} />
+      </section>
+      <Separator />
+      <section>
+        <SectionTitle title='Analytics' />
+        <SupplierAnalytics tasks={tasks} />
       </section>
     </div>
   );
