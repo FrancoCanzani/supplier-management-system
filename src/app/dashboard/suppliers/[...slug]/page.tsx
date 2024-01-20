@@ -27,7 +27,7 @@ export default async function SupplierPage({
       </div>
       <Separator />
       <SupplierInformation supplier={supplier} />
-      {tasks.length && (
+      {tasks.length > 0 && (
         <>
           <Separator />
           <section>
