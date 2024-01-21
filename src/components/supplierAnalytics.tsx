@@ -82,7 +82,7 @@ export default function SupplierAnalytics({ tasks }: { tasks: Task[] }) {
   const closedPercentage = calculateClosedPercentage(tasks);
 
   return (
-    <div className='flex flex-col lg:flex-row items-start gap-4 justify-start'>
+    <div className='flex flex-col sm:flex-row items-start gap-4 justify-start'>
       <Card className='max-w-md shadow-none p-3'>
         <Title className='text-base'>Tasks by label</Title>
         <Flex className='mt-4'>

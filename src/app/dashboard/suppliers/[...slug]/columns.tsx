@@ -2,21 +2,36 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Task } from '@/lib/types';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ClickAction } from '@/components/clickAction';
-import { deleteTask, updateTaskStatus } from '@/lib/actions';
+import { priorities, statuses } from '@/lib/data';
+import { ArrowUpDown } from 'lucide-react';
+import { DataTableRowActions } from '@/components/tables/data-table-row-actions';
+import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
 
 export const columns: ColumnDef<Task>[] = [
+  {
+    id: 'pin',
+    header: () => 'Pin',
+    cell: ({ row }) =>
+      row.getIsPinned() ? (
+        <Button
+          onClick={() => row.pin(false)}
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+        >
+          <DrawingPinFilledIcon />
+        </Button>
+      ) : (
+        <Button
+          onClick={() => row.pin('top')}
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+        >
+          <DrawingPinIcon />
+        </Button>
+      ),
+  },
   {
     accessorKey: 'label',
     header: ({ column }) => {
@@ -94,11 +109,24 @@ export const columns: ColumnDef<Task>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => (
-      <div>
-        <span className={cn('capitalize')}>{row.original.priority}</span>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const priority = priorities.find(
+        (priority) => priority.value === row.getValue('priority')
+      );
+
+      if (!priority) {
+        return null;
+      }
+
+      return (
+        <div className='flex items-center capitalize'>
+          {priority.icon && (
+            <priority.icon className='mr-2 h-4 w-4 text-muted-foreground capitalize' />
+          )}
+          <span>{priority.value}</span>
+        </div>
+      );
+    },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -118,15 +146,20 @@ export const columns: ColumnDef<Task>[] = [
       );
     },
     cell: ({ row }) => {
-      const task = row.original;
+      const status = statuses.find(
+        (status) => status.value === row.getValue('status')
+      );
+
+      if (!status) {
+        return null;
+      }
+
       return (
-        <div>
-          <ClickAction
-            action={updateTaskStatus}
-            id={task._id}
-            name={task.title}
-            buttonText={task.status}
-          />
+        <div className='flex items-center capitalize'>
+          {status.icon && (
+            <status.icon className='mr-2 h-4 w-4 text-muted-foreground capitalize' />
+          )}
+          <span>{status.value}</span>
         </div>
       );
     },
@@ -136,30 +169,6 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const task = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className='font-medium'>
-              <ClickAction
-                action={deleteTask}
-                id={task._id}
-                name={task.title}
-                buttonText='Delete'
-              />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
