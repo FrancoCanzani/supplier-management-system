@@ -119,75 +119,59 @@ async function deleteSupplier(
   }
 }
 
-async function deleteTask(
-  prevState: {
-    message: string;
-  },
-  formData: FormData
-) {
+async function deleteTask(taskId: string) {
   const db = await dbConnect();
 
-  const schema = z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-  });
-  const data = schema.parse({
-    id: formData.get('id'),
-    name: formData.get('todo'),
-  });
-
   try {
-    await Task.deleteOne({ _id: data.id });
+    await Task.deleteOne({ _id: taskId });
     revalidatePath('/dashboard');
-    return { message: `Deleted task ${data.name}` };
+    return { message: `Deleted task ${taskId}` };
   } catch (e) {
-    console.log(e);
     return { message: 'Failed to delete task' };
   }
 }
 
-async function updateTaskStatus(
-  prevState: {
-    message: string;
-  },
-  formData: FormData
-) {
+async function updateTaskStatus(taskId: string, newStatus: string) {
   const db = await dbConnect();
 
-  const schema = z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-  });
-  const data = schema.parse({
-    id: formData.get('id'),
-    name: formData.get('todo'),
-  });
-
   try {
-    const taskToUpdate = await Task.findOne({ _id: data.id });
+    const taskToUpdate = await Task.findOne({ _id: taskId });
 
     if (!taskToUpdate) {
       return { message: 'Task not found.' };
     }
 
-    if (taskToUpdate.status === 'open') {
-      taskToUpdate.status = 'in progress';
-    } else if (taskToUpdate.status === 'in progress') {
-      taskToUpdate.status = 'closed';
-    } else if (taskToUpdate.status === 'closed') {
-      taskToUpdate.status = 'cancelled';
-    } else if (taskToUpdate.status === 'cancelled') {
-      taskToUpdate.status = 'open';
-    }
-
+    taskToUpdate.status = newStatus;
     await taskToUpdate.save();
 
     revalidatePath('/dashboard');
     return {
-      message: `Updated task ${data.id} status to ${taskToUpdate.status}`,
+      message: `Updated task ${taskId} status to ${taskToUpdate.status}`,
     };
   } catch (e) {
     return { message: 'Failed to update task status.' };
+  }
+}
+
+async function updateTaskPriority(taskId: string, newPriority: string) {
+  const db = await dbConnect();
+
+  try {
+    const taskToUpdate = await Task.findOne({ _id: taskId });
+
+    if (!taskToUpdate) {
+      return { message: 'Task not found.' };
+    }
+
+    taskToUpdate.priority = newPriority;
+    await taskToUpdate.save();
+
+    revalidatePath('/dashboard');
+    return {
+      message: `Updated task ${taskId} status to ${taskToUpdate.priority}`,
+    };
+  } catch (e) {
+    return { message: 'Failed to update task priority.' };
   }
 }
 
@@ -211,4 +195,11 @@ async function addTask(taskData: TaskProps, userId: string) {
   }
 }
 
-export { addSupplier, deleteSupplier, addTask, deleteTask, updateTaskStatus };
+export {
+  addSupplier,
+  deleteSupplier,
+  addTask,
+  deleteTask,
+  updateTaskStatus,
+  updateTaskPriority,
+};

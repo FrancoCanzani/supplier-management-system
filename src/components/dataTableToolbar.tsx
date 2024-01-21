@@ -29,12 +29,16 @@ export function DataTableToolbar<TData>({
       label: 'Open',
     },
     {
-      value: 'paused',
-      label: 'Paused',
+      value: 'ongoing',
+      label: 'Ongoing',
     },
     {
       value: 'closed',
       label: 'Closed',
+    },
+    {
+      value: 'canceled',
+      label: 'Canceled',
     },
   ];
 
