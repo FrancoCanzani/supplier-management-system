@@ -30,15 +30,15 @@ export default function SupplierAnalytics({ tasks }: { tasks: Task[] }) {
 
   type ColorMapping = {
     open: string;
-    in_progress: string;
-    cancelled: string;
+    ongoing: string;
+    canceled: string;
     closed: string;
   };
 
   const colorMapping: ColorMapping = {
     open: 'gray',
-    in_progress: 'yellow',
-    cancelled: 'red',
+    ongoing: 'yellow',
+    canceled: 'red',
     closed: 'green',
   };
 
