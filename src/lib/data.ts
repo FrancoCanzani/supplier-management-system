@@ -14,7 +14,7 @@ const statuses = [
     icon: CircleIcon,
   },
   {
-    value: 'Ongoing',
+    value: 'ongoing',
     icon: StopwatchIcon,
   },
   {
