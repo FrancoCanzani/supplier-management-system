@@ -2,17 +2,16 @@
 
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { DataTableViewOptions } from './dataTableViewOptions';
-import { DataTableFacetedFilter } from './dataTableFacetedFilter';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { DataTableViewOptions } from '../dataTableViewOptions';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   data: TData[];
 }
 
-export function DataTableToolbar<TData>({
+export function SuppliersTableToolbar<TData>({
   table,
   data,
 }: DataTableToolbarProps<TData>) {
@@ -57,36 +56,12 @@ export function DataTableToolbar<TData>({
       <div className='flex flex-1 items-center space-x-2'>
         <Input
           placeholder='Filter suppliers...'
-          value={
-            (table.getColumn('supplier')?.getFilterValue() as string) ?? ''
-          }
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('supplier')?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
           className='h-8 w-[150px] lg:w-[250px] focus-visible:ring-0 focus-visible:ring-offset-0'
         />
-        <Input
-          placeholder='Filter tasks...'
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
-          }
-          className='h-8 w-[150px] lg:w-[250px] focus-visible:ring-0 focus-visible:ring-offset-0'
-        />
-        {table.getColumn('priority') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('priority')}
-            title='Priority'
-            options={priorities}
-          />
-        )}
-        {table.getColumn('status') && (
-          <DataTableFacetedFilter
-            column={table.getColumn('status')}
-            title='Status'
-            options={statuses}
-          />
-        )}
         {isFiltered && (
           <Button
             variant='ghost'

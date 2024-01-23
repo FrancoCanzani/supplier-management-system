@@ -2,23 +2,7 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  Row,
-  RowPinningState,
-  Table as T,
-} from '@tanstack/react-table';
+import { ColumnDef, flexRender, Row, Table as T } from '@tanstack/react-table';
 
 import {
   Table,
@@ -29,54 +13,21 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { DataTablePagination } from './dataTablePagination';
-import { DataTableToolbar } from './dataTableToolbar';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  deleteRowsAction?: React.MouseEventHandler<HTMLButtonElement>;
+  table: T<TData>;
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data,
+  table,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowPinning, setRowPinning] = useState<RowPinningState>({
-    top: [],
-  });
   const [copyPinnedRows, setCopyPinnedRows] = useState(false);
-
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      sorting,
-      columnVisibility,
-      rowPinning,
-      columnFilters,
-    },
-    enableRowSelection: true,
-    onRowPinningChange: setRowPinning,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-  });
 
   return (
     <div className='space-y-4'>
-      <div className='w-full space-y-2.5 overflow-auto'>
-        <DataTableToolbar data={data} table={table} />
-      </div>
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -99,7 +50,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getTopRows().map((row) => (
-              <PinnedRow key={row.id} row={row} table={table} />
+              <PinnedRow key={row.id} row={row} />
             ))}
             {table.getRowModel().rows?.length ? (
               (copyPinnedRows
@@ -139,7 +90,7 @@ export function DataTable<TData, TValue>({
   );
 }
 
-function PinnedRow({ row, table }: { row: Row<any>; table: T<any> }) {
+function PinnedRow({ row }: { row: Row<any> }) {
   return (
     <TableRow>
       {row.getVisibleCells().map((cell) => {

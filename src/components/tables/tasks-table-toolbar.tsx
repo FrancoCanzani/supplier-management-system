@@ -2,17 +2,17 @@
 
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { DataTableViewOptions } from './dataTableViewOptions';
-import { DataTableFacetedFilter } from './dataTableFacetedFilter';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { DataTableViewOptions } from '../dataTableViewOptions';
+import { DataTableFacetedFilter } from '../dataTableFacetedFilter';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   data: TData[];
 }
 
-export function DataTableToolbar<TData>({
+export function TasksTableToolbar<TData>({
   table,
   data,
 }: DataTableToolbarProps<TData>) {

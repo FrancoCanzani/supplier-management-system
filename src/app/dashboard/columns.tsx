@@ -2,12 +2,13 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Task } from '@/lib/types';
-import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { priorities, statuses } from '@/lib/data';
-import { ArrowUpDown } from 'lucide-react';
+import { DataTableColumnHeader } from '@/components/tables/data-table-column-header';
 import { DataTableRowActions } from '@/components/tables/data-table-row-actions';
 import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -34,87 +35,41 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'supplier',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Supplier
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <Link
-        href={`dashboard/suppliers/${row.original.supplierId}`}
-        className='capitalize max-w-[200px] truncate font-semibold hover:underline'
-      >
-        {row.original.supplier}
-      </Link>
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Supplier' />
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'label',
-    header: ({ column }) => {
+    cell: ({ row }) => {
       return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Label
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
+        <div className='flex space-x-2'>
+          <Link
+            href={`dashboard/suppliers/${row.original.supplierId}`}
+            className='capitalize max-w-[200px] truncate font-semibold hover:underline'
+          >
+            {row.original.supplier}
+          </Link>
+        </div>
       );
-    },
-    cell: ({ row }) => (
-      <div className='inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground'>
-        {row.original.label}
-      </div>
-    ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
     },
   },
   {
     accessorKey: 'title',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Title
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Task' />
+    ),
     cell: ({ row }) => (
-      <span className='max-w-[500px] truncate font-medium'>
-        {row.getValue('title')}
-      </span>
+      <div className='flex space-x-2'>
+        <Badge variant='outline'>{row.original.label}</Badge>
+        <span className='max-w-[500px] truncate font-medium'>
+          {row.getValue('title')}
+        </span>
+      </div>
     ),
   },
   {
     accessorKey: 'date',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Deadline
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Date' />
+    ),
     cell: ({ row }) => (
       <span className=''>
         {new Date(row.original.date).toLocaleDateString(['ban', 'id'])}
@@ -123,18 +78,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'priority',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Priority
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Priority' />
+    ),
     cell: ({ row }) => {
       const priority = priorities.find(
         (priority) => priority.value === row.getValue('priority')
@@ -159,18 +105,9 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
     cell: ({ row }) => {
       const status = statuses.find(
         (status) => status.value === row.getValue('status')
@@ -179,7 +116,6 @@ export const columns: ColumnDef<Task>[] = [
       if (!status) {
         return null;
       }
-
       return (
         <div className='flex items-center capitalize'>
           {status.icon && (

@@ -4,7 +4,7 @@ import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import { columns } from './columns';
 import { auth } from '@clerk/nextjs';
 import Link from 'next/link';
-import { DataTable } from '@/components/dataTable';
+import { SuppliersTable } from '@/components/tables/suppliers-table';
 
 export default async function Page() {
   const { userId } = auth();
@@ -56,7 +56,10 @@ export default async function Page() {
         </div>
         <Separator />
         <div className='container mx-auto py-4'>
-          <DataTable data={userSuppliersResult?.data || []} columns={columns} />
+          <SuppliersTable
+            data={userSuppliersResult?.data || []}
+            columns={columns}
+          />
         </div>
       </div>
     );

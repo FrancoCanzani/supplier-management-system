@@ -1,11 +1,11 @@
 import { Separator } from '@/components/ui/separator';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
-import { DataTable } from '@/components/dataTable';
 import { columns } from './columns';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { TasksTable } from '@/components/tables/tasks-Table';
 
 export default async function Dashboard() {
   const { userId } = auth();
@@ -61,7 +61,7 @@ export default async function Dashboard() {
         </div>
         <Separator />
         <div className='container mx-auto py-4'>
-          <DataTable columns={columns} data={userTasksResult.data ?? []} />
+          <TasksTable columns={columns} data={userTasksResult.data ?? []} />
         </div>
       </div>
     );

@@ -35,8 +35,8 @@ const supplierSchema = new mongoose.Schema({
     type: String,
   },
   active: {
-    type: Boolean,
-    default: true,
+    type: String,
+    default: 'active',
   },
   payment: {
     type: String,

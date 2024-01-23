@@ -23,7 +23,6 @@ export const columns: ColumnDef<Supplier>[] = [
   },
   {
     accessorKey: 'name',
-
     header: ({ column }) => {
       return (
         <Button
@@ -44,9 +43,6 @@ export const columns: ColumnDef<Supplier>[] = [
         {row.original.name}
       </Link>
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
   },
   {
     accessorKey: 'country',
