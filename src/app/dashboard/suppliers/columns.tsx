@@ -3,42 +3,50 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Supplier } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { DeleteForm } from '@/components/forms/deleteForm';
+import { DataTableColumnHeader } from '@/components/tables/data-table-column-header';
+import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
+import { SuppliersTableRowActions } from '@/components/tables/suppliers-table-row-actions';
 
 export const columns: ColumnDef<Supplier>[] = [
   {
+    id: 'pin',
+    header: () => 'Pin',
+    cell: ({ row }) =>
+      row.getIsPinned() ? (
+        <Button
+          onClick={() => row.pin(false)}
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+        >
+          <DrawingPinFilledIcon />
+        </Button>
+      ) : (
+        <Button
+          onClick={() => row.pin('top')}
+          variant='ghost'
+          className='p-0 hover:bg-inherit'
+        >
+          <DrawingPinIcon />
+        </Button>
+      ),
+  },
+  {
     accessorKey: 'account',
-    header: 'Account Id',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Account Id' />
+    ),
+    cell: ({ row }) => <div className='capitalize'>{row.original.account}</div>,
   },
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Name
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Name' />
+    ),
     cell: ({ row }) => (
       <Link
         href={`/dashboard/suppliers/${row.original.id}`}
-        className='capitalize font-semibold hover:underline'
+        className='capitalize font-semibold hover:underline max-w-[500px]'
       >
         {row.original.name}
       </Link>
@@ -46,93 +54,39 @@ export const columns: ColumnDef<Supplier>[] = [
   },
   {
     accessorKey: 'country',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Country
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Country' />
+    ),
     cell: ({ row }) => <div className='capitalize'>{row.original.country}</div>,
   },
   {
     accessorKey: 'port',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Port
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Port' />
+    ),
     cell: ({ row }) => <div className='capitalize'>{row.original.port}</div>,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
-    accessorKey: 'active',
-    header: ({ column }) => {
+    accessorKey: 'status',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Status' />
+    ),
+    cell: ({ row }) => {
       return (
-        <Button
-          variant='ghost'
-          className='p-0 hover:bg-inherit'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
+        <div className='flex items-center capitalize'>
+          {row.original.active}
+        </div>
       );
     },
-    cell: ({ row }) => (
-      <div>
-        <span
-          className={cn(
-            'p-2 font-medium rounded-md',
-            row.original.active
-              ? 'text-green-800 bg-green-50'
-              : 'text-gray-700 bg-gray-100'
-          )}
-        >
-          {row.original.active ? 'Active' : 'Inactive'}
-        </span>
-      </div>
-    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     id: 'actions',
-    cell: ({ row }) => {
-      const supplier = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' className='h-8 w-8 p-0'>
-              <span className='sr-only'>Open menu</span>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(supplier.account.toString())
-              }
-            >
-              Copy Account Id
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <DeleteForm id={supplier._id} name={supplier.name} />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <SuppliersTableRowActions row={row} />,
   },
 ];

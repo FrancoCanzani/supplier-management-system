@@ -1,12 +1,14 @@
 'use server';
 
 import { Supplier } from './database/schemas/supplierSchema';
+import { supplierValidation } from './validationSchemas';
 import dbConnect from './database/dbConnect';
-import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { TaskProps } from './types';
-import { Supplier as SupplierProps } from './types';
+import { z } from 'zod';
+
+type Supplier = z.infer<typeof supplierValidation>;
 
 async function addSupplier(formData: FormData, userId: string) {
   const db = await dbConnect();
@@ -20,10 +22,19 @@ async function addSupplier(formData: FormData, userId: string) {
     email: formData.get('email'),
     country: formData.get('country'),
     port: formData.get('port'),
+    incoterm: formData.get('incoterm'),
     payment: formData.get('payment'),
     billing: formData.get('billing'),
     notes: formData.get('notes'),
   };
+
+  const validation = supplierValidation.safeParse(supplierData);
+  if (!validation.success) {
+    return {
+      error: 'Validation failed',
+      issues: validation.error.issues,
+    };
+  }
 
   const { name, account } = supplierData;
 
@@ -40,7 +51,6 @@ async function addSupplier(formData: FormData, userId: string) {
   try {
     const newSupplier = new Supplier(supplierData);
     const savedSupplier = await newSupplier.save();
-    revalidatePath('/dashboard/suppliers');
 
     return {
       success: true,
@@ -48,15 +58,12 @@ async function addSupplier(formData: FormData, userId: string) {
     };
   } catch (error) {
     return {
-      error: 'Error adding supplier.',
+      error: 'Error adding supplier. Please try again!',
     };
   }
 }
 
-export async function updateSupplier(
-  supplierData: SupplierProps,
-  userId: string
-) {
+export async function updateSupplier(supplierData: Supplier, userId: string) {
   const db = await dbConnect();
 
   const { name, _id, id } = supplierData;
@@ -93,27 +100,13 @@ export async function updateSupplier(
   }
 }
 
-async function deleteSupplier(
-  prevState: {
-    message: string;
-  },
-  formData: FormData
-) {
+async function deleteSupplier(supplierId: string) {
   const db = await dbConnect();
 
-  const schema = z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-  });
-  const data = schema.parse({
-    id: formData.get('id'),
-    name: formData.get('todo'),
-  });
-
   try {
-    await Supplier.deleteOne({ _id: data.id });
+    await Supplier.deleteOne({ _id: supplierId });
     revalidatePath('/dashboard/suppliers');
-    return { message: `Deleted supplier ${data.name}` };
+    return { message: `Deleted supplier successfully` };
   } catch (e) {
     return { message: 'Failed to delete supplier' };
   }

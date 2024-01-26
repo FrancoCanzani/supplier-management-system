@@ -16,21 +16,24 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { priorities, statuses } from '@/lib/data';
-import { taskSchema } from '@/lib/validationSchemas';
+import { supplierValidation, taskSchema } from '@/lib/validationSchemas';
 import {
   updateTaskStatus,
   updateTaskPriority,
-  deleteTask,
+  deleteSupplier,
 } from '@/lib/actions';
+import Link from 'next/link';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions<TData>({
+export function SuppliersTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original);
+  const supplierProps = supplierValidation.parse(row.original);
+
+  const statuses = ['active', 'inactive'];
 
   return (
     <DropdownMenu>
@@ -44,7 +47,9 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/dashboard/suppliers/${supplierProps.id}`}>Edit</Link>
+        </DropdownMenuItem>
         {row.getIsPinned() ? (
           <DropdownMenuItem onClick={() => row.pin(false)}>
             Unpin
@@ -56,45 +61,28 @@ export function DataTableRowActions<TData>({
         )}
         <DropdownMenuSeparator />
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Priority</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.priority}>
-              {priorities.map((priority) => (
-                <DropdownMenuRadioItem
-                  key={priority.value}
-                  value={priority.value}
-                  className='capitalize'
-                  onClick={() =>
-                    task._id && updateTaskPriority(task._id, priority.value)
-                  }
-                >
-                  {priority.value}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
-        <DropdownMenuSub>
           <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.status}>
+            <DropdownMenuRadioGroup value={supplierProps.status}>
               {statuses.map((status) => (
                 <DropdownMenuRadioItem
-                  key={status.value}
-                  value={status.value}
+                  key={status}
+                  value={status}
                   className='capitalize'
-                  onClick={() =>
-                    task._id && updateTaskStatus(task._id, status.value)
-                  }
+                  //   onClick={() =>
+                  //     task._id && updateTaskStatus(task._id, status.value)
+                  //   }
                 >
-                  {status.value}
+                  {status}
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => task._id && deleteTask(task._id)}>
+        <DropdownMenuItem
+          onClick={() => supplierProps._id && deleteSupplier(supplierProps._id)}
+        >
           Delete
         </DropdownMenuItem>
       </DropdownMenuContent>

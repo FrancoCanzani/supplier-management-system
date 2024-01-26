@@ -42,4 +42,26 @@ const priorities = [
   },
 ];
 
-export { statuses, priorities };
+const mainPorts = {
+  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
+  indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
+  vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
+  malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
+  india: ['Mumbai', 'Nhava Sheva', 'Kolkata', 'Visakhapatnam', 'Kochi'],
+};
+
+const incoterms = [
+  'Ex Works (EXW)',
+  'Free Carrier (FCA)',
+  'Free Alongside Ship (FAS)',
+  'Free On Board (FOB)',
+  'Cost and Freight (CFR)',
+  'Cost, Insurance and Freight (CIF)',
+  'Carriage Paid To (CPT)',
+  'Carriage and Insurance Paid To (CIP)',
+  'Delivered at Terminal (DAT)',
+  'Delivered at Place (DAP)',
+  'Delivered Duty Paid (DDP)',
+];
+
+export { statuses, priorities, mainPorts, incoterms };

@@ -11,23 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { z } from 'zod';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { supplierSchema } from '@/lib/validationSchemas';
+import { supplierValidation } from '@/lib/validationSchemas';
 import { updateSupplier } from '@/lib/actions';
 import { SubmitButton } from './forms/submitButton';
 import { createRef, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { Supplier } from '@/lib/types';
 import { Switch } from './ui/switch';
+import { mainPorts, incoterms } from '@/lib/data';
 
-const mainPorts = {
-  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
-  indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
-  vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
-  malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
-  india: ['Mumbai', 'Nhava Sheva', 'Kolkata', 'Visakhapatnam', 'Kochi'],
-};
+type Supplier = z.infer<typeof supplierValidation>;
 
 export default function SupplierInformation({
   supplier,
@@ -42,14 +37,15 @@ export default function SupplierInformation({
     email: supplier.email,
     country: supplier.country,
     port: supplier.port,
+    incoterm: supplier.incoterm,
     payment: supplier.payment,
     billing: supplier.billing,
     notes: supplier.notes,
     _id: supplier._id,
     id: supplier.id,
-    active: supplier.active,
-    __v: supplier.__v,
+    status: supplier.status,
   });
+
   const [isEditing, setIsEditing] = useState(false);
 
   const { userId } = useAuth();
@@ -57,11 +53,9 @@ export default function SupplierInformation({
 
   const clientAction = async (supplierData: Supplier) => {
     // Client side validation
-    const validation = supplierSchema.safeParse(supplierData);
+    const validation = supplierValidation.safeParse(supplierData);
     if (!validation.success) {
-      validation.error.issues.map((issue) =>
-        toast.error(issue.path[0] + ': ' + issue.message)
-      );
+      validation.error.issues.map((issue) => toast.error(issue.message));
     } else {
       if (userId) {
         const response = await updateSupplier(supplierData, userId);
@@ -176,81 +170,118 @@ export default function SupplierInformation({
             />
           </div>
         </div>
-        <div>
-          <Label htmlFor='country'>Country</Label>
-          <Select
-            name='country'
-            value={supplierData.country}
-            onValueChange={(e) =>
-              setSupplierData({
-                ...supplierData,
-                country: e,
-              })
-            }
-            disabled={!isEditing}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder='Select suppliers country' />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Country</SelectLabel>
-                <SelectItem value='china'>China</SelectItem>
-                <SelectItem value='india'>India</SelectItem>
-                <SelectItem value='indonesia'>Indonesia</SelectItem>
-                <SelectItem value='malaysia'>Malaysia</SelectItem>
-                <SelectItem value='vietnam'>Vietnam</SelectItem>
-                <SelectItem value='spain'>Spain</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <div className='flex items-center justify-evenly w-full gap-x-3'>
+          <div className='w-1/2'>
+            <Label htmlFor='country'>Country</Label>
+            <Select
+              name='country'
+              value={supplierData.country}
+              onValueChange={(e) =>
+                setSupplierData({
+                  ...supplierData,
+                  country: e,
+                })
+              }
+              disabled={!isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder='Select suppliers country' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Country</SelectLabel>
+                  <SelectItem value='china'>China</SelectItem>
+                  <SelectItem value='india'>India</SelectItem>
+                  <SelectItem value='indonesia'>Indonesia</SelectItem>
+                  <SelectItem value='malaysia'>Malaysia</SelectItem>
+                  <SelectItem value='vietnam'>Vietnam</SelectItem>
+                  <SelectItem value='spain'>Spain</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className='w-1/2'>
+            <Label htmlFor='port'>Port</Label>
+            <Select
+              name='port'
+              value={supplierData.port}
+              onValueChange={(e) =>
+                setSupplierData({
+                  ...supplierData,
+                  port: e,
+                })
+              }
+              disabled={!isEditing}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder='Select suppliers port' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>China</SelectLabel>
+                  {mainPorts.china.map((port) => (
+                    <SelectItem key={port} value={port.toLowerCase()}>
+                      {port}
+                    </SelectItem>
+                  ))}
+                  <SelectLabel>Indonesia</SelectLabel>
+                  {mainPorts.indonesia.map((port) => (
+                    <SelectItem key={port} value={port.toLowerCase()}>
+                      {port}
+                    </SelectItem>
+                  ))}
+                  <SelectLabel>India</SelectLabel>
+                  {mainPorts.india.map((port) => (
+                    <SelectItem key={port} value={port.toLowerCase()}>
+                      {port}
+                    </SelectItem>
+                  ))}
+                  <SelectLabel>Malaysia</SelectLabel>
+                  {mainPorts.malaysia.map((port) => (
+                    <SelectItem key={port} value={port.toLowerCase()}>
+                      {port}
+                    </SelectItem>
+                  ))}
+                  <SelectLabel>Vietnam</SelectLabel>
+                  {mainPorts.vietnam.map((port) => (
+                    <SelectItem key={port} value={port.toLowerCase()}>
+                      {port}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div>
-          <Label htmlFor='port'>Port</Label>
+          <Label htmlFor='incoterm'>
+            <a
+              href='https://en.wikipedia.org/wiki/Incoterms'
+              target='_blank'
+              className='text-blue-700'
+            >
+              Incoterm
+            </a>
+          </Label>
           <Select
-            name='port'
-            value={supplierData.port}
+            name='incoterm'
+            value={supplierData.incoterm}
             onValueChange={(e) =>
               setSupplierData({
                 ...supplierData,
-                port: e,
+                incoterm: e,
               })
             }
             disabled={!isEditing}
           >
             <SelectTrigger>
-              <SelectValue placeholder='Select suppliers port' />
+              <SelectValue placeholder="Select supplier's incoterm" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>China</SelectLabel>
-                {mainPorts.china.map((port) => (
-                  <SelectItem key={port} value={port.toLowerCase()}>
-                    {port}
-                  </SelectItem>
-                ))}
-                <SelectLabel>Indonesia</SelectLabel>
-                {mainPorts.indonesia.map((port) => (
-                  <SelectItem key={port} value={port.toLowerCase()}>
-                    {port}
-                  </SelectItem>
-                ))}
-                <SelectLabel>India</SelectLabel>
-                {mainPorts.india.map((port) => (
-                  <SelectItem key={port} value={port.toLowerCase()}>
-                    {port}
-                  </SelectItem>
-                ))}
-                <SelectLabel>Malaysia</SelectLabel>
-                {mainPorts.malaysia.map((port) => (
-                  <SelectItem key={port} value={port.toLowerCase()}>
-                    {port}
-                  </SelectItem>
-                ))}
-                <SelectLabel>Vietnam</SelectLabel>
-                {mainPorts.vietnam.map((port) => (
-                  <SelectItem key={port} value={port.toLowerCase()}>
-                    {port}
+                {incoterms.map((incoterm) => (
+                  <SelectItem key={incoterm} value={incoterm.toLowerCase()}>
+                    {incoterm}
                   </SelectItem>
                 ))}
               </SelectGroup>

@@ -13,19 +13,12 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { supplierSchema } from '@/lib/validationSchemas';
+import { supplierValidation } from '@/lib/validationSchemas';
 import { addSupplier } from '@/lib/actions';
 import { SubmitButton } from './submitButton';
 import { createRef } from 'react';
 import { useAuth } from '@clerk/nextjs';
-
-const mainPorts = {
-  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
-  indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
-  vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
-  malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
-  india: ['Mumbai', 'Nhava Sheva', 'Kolkata', 'Visakhapatnam', 'Kochi'],
-};
+import { incoterms, mainPorts } from '@/lib/data';
 
 export function NewSupplierForm() {
   const { userId } = useAuth();
@@ -41,17 +34,16 @@ export function NewSupplierForm() {
       email: formData.get('email'),
       country: formData.get('country'),
       port: formData.get('port'),
+      incoterm: formData.get('incoterm'),
       payment: formData.get('payment'),
       billing: formData.get('billing'),
       notes: formData.get('notes'),
     };
 
     // Client side validation
-    const validation = supplierSchema.safeParse(supplierData);
+    const validation = supplierValidation.safeParse(supplierData);
     if (!validation.success) {
-      validation.error.issues.map((issue) =>
-        toast.error(issue.path[0] + ': ' + issue.message)
-      );
+      validation.error.issues.map((issue) => toast.error(issue.message));
     } else {
       if (userId) {
         const response = await addSupplier(formData, userId);
@@ -82,7 +74,6 @@ export function NewSupplierForm() {
             minLength={3}
             autoFocus
             placeholder='Shinawood'
-            required
           />
         </div>
         <div className='w-1/4'>
@@ -103,7 +94,7 @@ export function NewSupplierForm() {
           placeholder='No. 801C, Xinjinlong Building, Weijin South Road, Tianjin, China'
         />
       </div>
-      <div className='flex items-center gap-x-3 justify-start'>
+      <div className='flex items-center gap-x-3 justify-evenly'>
         <div className='w-1/2'>
           <Label htmlFor='phone'>Phone Number</Label>
           <Input
@@ -125,61 +116,88 @@ export function NewSupplierForm() {
           />
         </div>
       </div>
-      <div>
-        <Label htmlFor='country'>Country</Label>
-        <Select name='country'>
-          <SelectTrigger>
-            <SelectValue placeholder='Select suppliers country' />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Country</SelectLabel>
-              <SelectItem value='china'>China</SelectItem>
-              <SelectItem value='india'>India</SelectItem>
-              <SelectItem value='indonesia'>Indonesia</SelectItem>
-              <SelectItem value='malaysia'>Malaysia</SelectItem>
-              <SelectItem value='vietnam'>Vietnam</SelectItem>
-              <SelectItem value='spain'>Spain</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      <div className='flex items-center justify-evenly w-full gap-x-3'>
+        <div className='w-1/2'>
+          <Label htmlFor='country'>Country</Label>
+          <Select name='country'>
+            <SelectTrigger>
+              <SelectValue placeholder='Select suppliers country' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Country</SelectLabel>
+                <SelectItem value='china'>China</SelectItem>
+                <SelectItem value='india'>India</SelectItem>
+                <SelectItem value='indonesia'>Indonesia</SelectItem>
+                <SelectItem value='malaysia'>Malaysia</SelectItem>
+                <SelectItem value='vietnam'>Vietnam</SelectItem>
+                <SelectItem value='spain'>Spain</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className='w-1/2'>
+          <Label htmlFor='port'>Port</Label>
+          <Select name='port'>
+            <SelectTrigger>
+              <SelectValue placeholder='Select suppliers port' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>China</SelectLabel>
+                {mainPorts.china.map((port) => (
+                  <SelectItem key={port} value={port.toLowerCase()}>
+                    {port}
+                  </SelectItem>
+                ))}
+                <SelectLabel>Indonesia</SelectLabel>
+                {mainPorts.indonesia.map((port) => (
+                  <SelectItem key={port} value={port.toLowerCase()}>
+                    {port}
+                  </SelectItem>
+                ))}
+                <SelectLabel>India</SelectLabel>
+                {mainPorts.india.map((port) => (
+                  <SelectItem key={port} value={port.toLowerCase()}>
+                    {port}
+                  </SelectItem>
+                ))}
+                <SelectLabel>Malaysia</SelectLabel>
+                {mainPorts.malaysia.map((port) => (
+                  <SelectItem key={port} value={port.toLowerCase()}>
+                    {port}
+                  </SelectItem>
+                ))}
+                <SelectLabel>Vietnam</SelectLabel>
+                {mainPorts.vietnam.map((port) => (
+                  <SelectItem key={port} value={port.toLowerCase()}>
+                    {port}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div>
-        <Label htmlFor='port'>Port</Label>
-        <Select name='port'>
+        <Label htmlFor='incoterm'>
+          <a
+            href='https://en.wikipedia.org/wiki/Incoterms'
+            target='_blank'
+            className='text-blue-700'
+          >
+            Incoterm
+          </a>
+        </Label>
+        <Select name='incoterm'>
           <SelectTrigger>
-            <SelectValue placeholder='Select suppliers port' />
+            <SelectValue placeholder="Select supplier's incoterm" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>China</SelectLabel>
-              {mainPorts.china.map((port) => (
-                <SelectItem key={port} value={port.toLowerCase()}>
-                  {port}
-                </SelectItem>
-              ))}
-              <SelectLabel>Indonesia</SelectLabel>
-              {mainPorts.indonesia.map((port) => (
-                <SelectItem key={port} value={port.toLowerCase()}>
-                  {port}
-                </SelectItem>
-              ))}
-              <SelectLabel>India</SelectLabel>
-              {mainPorts.india.map((port) => (
-                <SelectItem key={port} value={port.toLowerCase()}>
-                  {port}
-                </SelectItem>
-              ))}
-              <SelectLabel>Malaysia</SelectLabel>
-              {mainPorts.malaysia.map((port) => (
-                <SelectItem key={port} value={port.toLowerCase()}>
-                  {port}
-                </SelectItem>
-              ))}
-              <SelectLabel>Vietnam</SelectLabel>
-              {mainPorts.vietnam.map((port) => (
-                <SelectItem key={port} value={port.toLowerCase()}>
-                  {port}
+              {incoterms.map((incoterm) => (
+                <SelectItem key={incoterm} value={incoterm.toLowerCase()}>
+                  {incoterm}
                 </SelectItem>
               ))}
             </SelectGroup>

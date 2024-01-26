@@ -31,6 +31,9 @@ const supplierSchema = new mongoose.Schema({
   port: {
     type: String,
   },
+  incoterm: {
+    type: String,
+  },
   notes: {
     type: String,
   },
