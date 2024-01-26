@@ -1,12 +1,15 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Supplier } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/tables/data-table-column-header';
 import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { SuppliersTableRowActions } from '@/components/tables/suppliers-table-row-actions';
+import { supplierValidation } from '@/lib/validationSchemas';
+import { z } from 'zod';
+
+type Supplier = z.infer<typeof supplierValidation>;
 
 export const columns: ColumnDef<Supplier>[] = [
   {
@@ -70,6 +73,18 @@ export const columns: ColumnDef<Supplier>[] = [
     },
   },
   {
+    accessorKey: 'incoterm',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Incoterm' />
+    ),
+    cell: ({ row }) => (
+      <div className='capitalize'>{row.original.incoterm}</div>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
@@ -77,7 +92,7 @@ export const columns: ColumnDef<Supplier>[] = [
     cell: ({ row }) => {
       return (
         <div className='flex items-center capitalize'>
-          {row.original.active}
+          {row.original.status}
         </div>
       );
     },

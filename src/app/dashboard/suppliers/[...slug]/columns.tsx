@@ -6,8 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { priorities, statuses } from '@/lib/data';
 import { DataTableColumnHeader } from '@/components/tables/data-table-column-header';
-import { DataTableRowActions } from '@/components/tables/tasks-table-row-actions';
 import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
+import { TasksTableRowActions } from '@/components/tables/tasks-table-row-actions';
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -112,6 +112,6 @@ export const columns: ColumnDef<Task>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row }) => <TasksTableRowActions row={row} />,
   },
 ];
