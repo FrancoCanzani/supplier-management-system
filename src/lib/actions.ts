@@ -1,14 +1,14 @@
 'use server';
 
 import { Supplier } from './database/schemas/supplierSchema';
-import { supplierValidation } from './validationSchemas';
+import { supplierValidation, taskValidation } from './validationSchemas';
 import dbConnect from './database/dbConnect';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
-import { TaskProps } from './types';
 import { z } from 'zod';
 
 type Supplier = z.infer<typeof supplierValidation>;
+type TaskProps = z.infer<typeof taskValidation>;
 
 async function addSupplier(formData: FormData, userId: string) {
   const db = await dbConnect();
@@ -56,6 +56,7 @@ async function addSupplier(formData: FormData, userId: string) {
       success: true,
       data: savedSupplier,
     };
+    revalidatePath(`/dashboard/suppliers`);
   } catch (error) {
     return {
       error: 'Error adding supplier. Please try again!',
@@ -96,6 +97,49 @@ export async function updateSupplier(supplierData: Supplier, userId: string) {
 
     return {
       error: 'Error updating supplier.',
+    };
+  }
+}
+
+async function updateTask(taskData: TaskProps, userId: string) {
+  const db = await dbConnect();
+
+  const { _id, title, label, date, priority, comments } = taskData;
+
+  const existingTask = await Task.findById(_id);
+
+  if (!existingTask) {
+    return {
+      error: 'Task not found for update.',
+    };
+  }
+
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          title,
+          label,
+          date,
+          priority,
+          comments,
+        },
+      },
+      { new: true, upsert: true }
+    );
+
+    revalidatePath('/dashboard');
+
+    return {
+      success: true,
+      data: updatedTask,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      error: 'Error updating task.',
     };
   }
 }
@@ -143,6 +187,28 @@ async function updateTaskStatus(taskId: string, newStatus: string) {
     };
   } catch (e) {
     return { message: 'Failed to update task status.' };
+  }
+}
+
+async function updateSupplierStatus(supplierId: string, newStatus: string) {
+  const db = await dbConnect();
+
+  try {
+    const supplierToUpdate = await Supplier.findOne({ _id: supplierId });
+
+    if (!supplierToUpdate) {
+      return { message: 'Supplier not found.' };
+    }
+
+    supplierToUpdate.status = newStatus;
+    await supplierToUpdate.save();
+
+    revalidatePath('/dashboard/suppliers');
+    return {
+      message: `Updated supplier ${supplierId} status to ${supplierToUpdate.status}`,
+    };
+  } catch (e) {
+    return { message: 'Failed to update supplier status.' };
   }
 }
 
@@ -195,4 +261,6 @@ export {
   deleteTask,
   updateTaskStatus,
   updateTaskPriority,
+  updateSupplierStatus,
+  updateTask,
 };

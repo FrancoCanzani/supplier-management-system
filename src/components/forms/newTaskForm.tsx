@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { taskSchema } from '@/lib/validationSchemas';
+import { taskValidation } from '@/lib/validationSchemas';
 import { SubmitButton } from './submitButton';
 import { createRef } from 'react';
 import { DataSelector } from '../dataSelector';
@@ -44,7 +44,7 @@ export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
     };
 
     // Client side validation
-    const validation = taskSchema.safeParse(taskData);
+    const validation = taskValidation.safeParse(taskData);
     if (!validation.success) {
       validation.error.issues.map((issue) =>
         toast.error(issue.path[0] + ': ' + issue.message)

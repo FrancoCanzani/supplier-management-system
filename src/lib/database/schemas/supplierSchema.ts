@@ -37,7 +37,7 @@ const supplierSchema = new mongoose.Schema({
   notes: {
     type: String,
   },
-  active: {
+  status: {
     type: String,
     default: 'active',
   },

@@ -26,10 +26,18 @@ const supplierValidation = object({
   status: z.string().optional(),
 });
 
-const taskSchema = object({
+const taskValidation = object({
   _id: z.string().optional(),
-  supplier: z.string().min(3),
-  title: z.string().min(3).optional(),
+  supplier: z.string({
+    required_error: 'Supplier is required',
+  }),
+  title: z
+    .string({
+      required_error: 'Title is required',
+    })
+    .refine((data) => data.trim().length > 0, {
+      message: 'Title is a required field',
+    }),
   label: z.string().optional(),
   date: z.date().or(z.string()).optional(),
   priority: z.string().optional(),
@@ -37,4 +45,4 @@ const taskSchema = object({
   status: z.string().optional(),
 });
 
-export { supplierValidation, taskSchema };
+export { supplierValidation, taskValidation };

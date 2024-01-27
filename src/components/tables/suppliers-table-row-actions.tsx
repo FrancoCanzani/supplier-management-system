@@ -15,13 +15,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { priorities, statuses } from '@/lib/data';
-import { supplierValidation, taskSchema } from '@/lib/validationSchemas';
-import {
-  updateTaskStatus,
-  updateTaskPriority,
-  deleteSupplier,
-} from '@/lib/actions';
+import { supplierValidation } from '@/lib/validationSchemas';
+import { updateSupplierStatus, deleteSupplier } from '@/lib/actions';
 import Link from 'next/link';
 
 interface DataTableRowActionsProps<TData> {
@@ -31,7 +26,7 @@ interface DataTableRowActionsProps<TData> {
 export function SuppliersTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  const supplierProps = supplierValidation.parse(row.original);
+  const supplier = supplierValidation.parse(row.original);
 
   const statuses = ['active', 'inactive'];
 
@@ -48,7 +43,7 @@ export function SuppliersTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
         <DropdownMenuItem>
-          <Link href={`/dashboard/suppliers/${supplierProps.id}`}>Edit</Link>
+          <Link href={`/dashboard/suppliers/${supplier.id}`}>Edit</Link>
         </DropdownMenuItem>
         {row.getIsPinned() ? (
           <DropdownMenuItem onClick={() => row.pin(false)}>
@@ -63,15 +58,19 @@ export function SuppliersTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={supplierProps.status}>
+            <DropdownMenuRadioGroup value={supplier.status}>
               {statuses.map((status) => (
                 <DropdownMenuRadioItem
                   key={status}
                   value={status}
                   className='capitalize'
-                  //   onClick={() =>
-                  //     task._id && updateTaskStatus(task._id, status.value)
-                  //   }
+                  onClick={() =>
+                    supplier._id &&
+                    updateSupplierStatus(
+                      supplier._id,
+                      supplier.status == 'active' ? 'inactive' : 'active'
+                    )
+                  }
                 >
                   {status}
                 </DropdownMenuRadioItem>
@@ -81,7 +80,7 @@ export function SuppliersTableRowActions<TData>({
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => supplierProps._id && deleteSupplier(supplierProps._id)}
+          onClick={() => supplier._id && deleteSupplier(supplier._id)}
         >
           Delete
         </DropdownMenuItem>
