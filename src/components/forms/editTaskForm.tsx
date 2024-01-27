@@ -54,7 +54,7 @@ export default function EditTaskForm({ task }: { task: Task }) {
 
   return (
     <DialogContent>
-      <form action={clientAction} className='space-y-4 w-full'>
+      <form action={clientAction} className='space-y-4 max-w-5xl'>
         <div className='w-full'>
           <Label htmlFor='title'>Title</Label>
           <Input
