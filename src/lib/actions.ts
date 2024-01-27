@@ -6,6 +6,7 @@ import dbConnect from './database/dbConnect';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { z } from 'zod';
+import { NewTask } from './types';
 
 type Supplier = z.infer<typeof supplierValidation>;
 type TaskProps = z.infer<typeof taskValidation>;
@@ -234,8 +235,16 @@ async function updateTaskPriority(taskId: string, newPriority: string) {
   }
 }
 
-async function addTask(taskData: TaskProps, userId: string) {
+async function addTask(taskData: NewTask, userId: string) {
   const db = await dbConnect();
+
+  const validation = taskValidation.safeParse(taskData);
+  if (!validation.success) {
+    return {
+      error: 'Validation failed',
+      issues: validation.error.issues,
+    };
+  }
 
   try {
     const newTask = new Task({ ...taskData, userId });

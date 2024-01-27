@@ -15,7 +15,7 @@ interface Supplier {
   __v: number;
 }
 
-interface TaskProps {
+interface NewTask {
   supplier: String;
   title: FormDataEntryValue;
   label: FormDataEntryValue;
@@ -38,4 +38,4 @@ type Task = {
   __v: number;
 };
 
-export type { Supplier, TaskProps, Task };
+export type { Supplier, NewTask, Task };

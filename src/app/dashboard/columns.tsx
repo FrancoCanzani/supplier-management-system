@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button';
 import { priorities, statuses } from '@/lib/data';
 import { DataTableColumnHeader } from '@/components/tables/data-table-column-header';
 import { TasksTableRowActions } from '@/components/tables/tasks-table-row-actions';
-import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
+import {
+  DrawingPinIcon,
+  DrawingPinFilledIcon,
+  InfoCircledIcon,
+} from '@radix-ui/react-icons';
 import Link from 'next/link';
 
 export const columns: ColumnDef<Task>[] = [
@@ -62,6 +66,7 @@ export const columns: ColumnDef<Task>[] = [
         <span className='max-w-[500px] truncate font-medium'>
           {row.getValue('title')}
         </span>
+        <span>{row.getValue('comments')}</span>
       </div>
     ),
   },
