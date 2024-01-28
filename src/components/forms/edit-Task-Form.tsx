@@ -1,5 +1,5 @@
 import { DialogContent } from '@/components/ui/dialog';
-import { SubmitButton } from './submitButton';
+import { SubmitButton } from './submit-Button';
 import { Input } from '@/components/ui/input';
 import { Label } from '../ui/label';
 import {

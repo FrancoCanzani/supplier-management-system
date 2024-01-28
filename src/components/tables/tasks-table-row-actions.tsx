@@ -2,7 +2,7 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Row } from '@tanstack/react-table';
-import EditTaskForm from '../forms/editTaskForm';
+import EditTaskForm from '../forms/edit-Task-Form';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import {
@@ -48,9 +48,7 @@ export function TasksTableRowActions<TData>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
           <DropdownMenuItem>
-            <DialogTrigger className='cursor-default'>
-              Edit
-            </DialogTrigger>
+            <DialogTrigger className='cursor-default'>Edit</DialogTrigger>
           </DropdownMenuItem>
           {row.getIsPinned() ? (
             <DropdownMenuItem onClick={() => row.pin(false)}>

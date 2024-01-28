@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { Label } from './ui/label';
+import { Label } from '../ui/label';
 import {
   Select,
   SelectContent,
@@ -16,15 +16,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { supplierValidation } from '@/lib/validationSchemas';
 import { updateSupplier } from '@/lib/actions';
-import { SubmitButton } from './forms/submitButton';
+import { SubmitButton } from './submit-Button';
 import { createRef, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { Switch } from './ui/switch';
+import { Switch } from '../ui/switch';
 import { mainPorts, incoterms } from '@/lib/data';
 
 type Supplier = z.infer<typeof supplierValidation>;
 
-export default function SupplierInformation({
+export default function SupplierInformationForm({
   supplier,
 }: {
   supplier: Supplier;

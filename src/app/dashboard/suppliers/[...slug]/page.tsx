@@ -4,8 +4,8 @@ import { Separator } from '@/components/ui/separator';
 import { columns } from './columns';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
-import SupplierAnalytics from '@/components/supplierAnalytics';
-import SupplierInformation from '@/components/supplierInformation';
+import SupplierAnalytics from '@/components/supplier-Analytics';
+import SupplierInformationForm from '@/components/forms/supplier-Information-form';
 import { TasksTable } from '@/components/tables/tasks-Table';
 
 export default async function SupplierPage({
@@ -26,7 +26,7 @@ export default async function SupplierPage({
         <p className='text-gray-600'>All {supplier.name}&apos;s data</p>
       </div>
       <Separator />
-      <SupplierInformation supplier={supplier} />
+      <SupplierInformationForm supplier={supplier} />
       {tasks.length > 0 && (
         <>
           <Separator />
