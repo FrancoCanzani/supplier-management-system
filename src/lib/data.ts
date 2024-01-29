@@ -43,7 +43,7 @@ const priorities = [
 ];
 
 const mainPorts = {
-  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen'],
+  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen', 'Fuzhou'],
   indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
   vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
   malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
