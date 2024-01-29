@@ -48,7 +48,9 @@ export function TasksTableRowActions<TData>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[160px]'>
           <DropdownMenuItem>
-            <DialogTrigger className='cursor-default'>Edit</DialogTrigger>
+            <DialogTrigger className='cursor-default w-full text-start'>
+              Edit
+            </DialogTrigger>
           </DropdownMenuItem>
           {row.getIsPinned() ? (
             <DropdownMenuItem onClick={() => row.pin(false)}>

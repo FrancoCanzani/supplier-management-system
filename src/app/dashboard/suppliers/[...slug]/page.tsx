@@ -1,19 +1,22 @@
-import { Supplier as SupplierProps } from '@/lib/types';
 import { getSupplier } from '@/lib/helpers/getSupplier';
 import { Separator } from '@/components/ui/separator';
 import { columns } from './columns';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
 import SupplierAnalytics from '@/components/supplier-Analytics';
-import SupplierInformationForm from '@/components/forms/supplier-Information-form';
 import { TasksTable } from '@/components/tables/tasks-Table';
+import { supplierValidation } from '@/lib/validationSchemas';
+import z from 'zod';
+import SupplierInformation from '@/components/supplier-information';
 
 export default async function SupplierPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const supplier: SupplierProps = await getSupplier(params.slug);
+  type Supplier = z.infer<typeof supplierValidation>;
+
+  const supplier: Supplier = await getSupplier(params.slug);
 
   await dbConnect();
 
@@ -26,7 +29,7 @@ export default async function SupplierPage({
         <p className='text-gray-600'>All {supplier.name}&apos;s data</p>
       </div>
       <Separator />
-      <SupplierInformationForm supplier={supplier} />
+      <SupplierInformation supplier={supplier} />
       {tasks.length > 0 && (
         <>
           <Separator />

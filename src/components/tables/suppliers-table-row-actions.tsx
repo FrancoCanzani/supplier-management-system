@@ -3,6 +3,7 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Row } from '@tanstack/react-table';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +18,6 @@ import {
 } from '../ui/dropdown-menu';
 import { supplierValidation } from '@/lib/validationSchemas';
 import { updateSupplierStatus, deleteSupplier } from '@/lib/actions';
-import Link from 'next/link';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -43,7 +43,12 @@ export function SuppliersTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
         <DropdownMenuItem>
-          <Link href={`/dashboard/suppliers/${supplier.id}`}>Edit</Link>
+          <Link
+            href={`/dashboard/suppliers/edit/${supplier.id}`}
+            className='cursor-default w-full text-start'
+          >
+            Edit
+          </Link>
         </DropdownMenuItem>
         {row.getIsPinned() ? (
           <DropdownMenuItem onClick={() => row.pin(false)}>
