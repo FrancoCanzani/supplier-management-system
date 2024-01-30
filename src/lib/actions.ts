@@ -7,6 +7,8 @@ import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { z } from 'zod';
 import { NewTask } from './types';
+import { Resend } from 'resend';
+import { EmailTemplate } from '@/components/email-template';
 
 type Supplier = z.infer<typeof supplierValidation>;
 type TaskProps = z.infer<typeof taskValidation>;
@@ -263,6 +265,20 @@ async function addTask(taskData: NewTask, userId: string) {
   }
 }
 
+async function sendEmail() {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const { data } = await resend.emails.send({
+    from: 'Acme <onboarding@resend.dev>',
+    to: ['francocanzani@gmail.com'],
+    subject: 'New Feedback Received',
+    react: EmailTemplate({ firstName: 'John' }),
+    text: 'Your plain text version here', // Add this line
+  });
+
+  console.log(data);
+}
+
 export {
   addSupplier,
   deleteSupplier,
@@ -272,4 +288,5 @@ export {
   updateTaskPriority,
   updateSupplierStatus,
   updateTask,
+  sendEmail,
 };

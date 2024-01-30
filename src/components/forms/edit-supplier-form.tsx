@@ -16,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { supplierValidation } from '@/lib/validationSchemas';
 import { updateSupplier } from '@/lib/actions';
-import { SubmitButton } from './submit-Button';
+import { SubmitButton } from './submit-button';
 import { createRef, useState } from 'react';
 import { useAuth } from '@clerk/nextjs';
 import { mainPorts, incoterms } from '@/lib/data';

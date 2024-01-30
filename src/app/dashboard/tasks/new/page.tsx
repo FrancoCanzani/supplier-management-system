@@ -1,8 +1,8 @@
 import { Separator } from '@/components/ui/separator';
-import { NewTaskForm } from '@/components/forms/new-Task-Form';
 import dbConnect from '@/lib/database/dbConnect';
 import { Supplier } from '@/lib/database/schemas/supplierSchema';
 import { auth } from '@clerk/nextjs';
+import { NewTaskForm } from '@/components/forms/new-Task-Form';
 
 export default async function NewTask() {
   const { userId } = auth();
