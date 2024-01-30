@@ -28,7 +28,7 @@ export default function SupplierInformation({
             <h3 className='text-lg font-semibold tracking-tight mb-3'>
               General
             </h3>
-            <div className='flex items-center justify-start flex-col sm:flex-row sm:space-x-6 mb-6'>
+            <div className='flex items-center justify-start flex-col sm:flex-row sm:space-x-8 mb-6'>
               <p className='capitalize mb-2 w-full sm:w-fit sm:mb-0'>
                 <span className='font-semibold italic'>Name:</span>{' '}
                 {supplier.name}
@@ -53,9 +53,9 @@ export default function SupplierInformation({
                 {supplier.address}
               </p>
               {(supplier.email || supplier.phone) && (
-                <div className='flex items-center justify-start w-full flex-col sm:flex-row sm:space-x-6'>
+                <div className='flex items-center justify-start w-full flex-col sm:flex-row sm:space-x-8'>
                   {supplier.email && (
-                    <p className='capitalize mb-2 w-full sm:w-fit sm:mb-0'>
+                    <p className='mb-2 w-full sm:w-fit sm:mb-0'>
                       <span className='font-semibold italic'>Email:</span>{' '}
                       {supplier.email}
                     </p>
@@ -108,7 +108,7 @@ export default function SupplierInformation({
             <h3 className='text-lg font-semibold tracking-tight mb-3 w-full'>
               Billing
             </h3>
-            <div className='flex items-center justify-start w-full flex-col sm:flex-row sm:space-x-6 mb-6'>
+            <div className='flex items-center justify-start w-full flex-col sm:flex-row sm:space-x-8 mb-6'>
               {supplier.payment && (
                 <p className='capitalize mb-2 w-full sm:w-fit sm:mb-0'>
                   <span className='font-semibold italic'>Payment:</span>{' '}
