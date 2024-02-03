@@ -3,11 +3,11 @@ import { Separator } from '@/components/ui/separator';
 import { columns } from './columns';
 import dbConnect from '@/lib/database/dbConnect';
 import { Task } from '@/lib/database/schemas/taskSchema';
-import SupplierAnalytics from '@/components/supplier-Analytics';
 import { TasksTable } from '@/components/tables/tasks-Table';
 import { supplierValidation } from '@/lib/validationSchemas';
 import z from 'zod';
 import SupplierInformation from '@/components/supplier-information';
+import SupplierAnalytics from '@/components/supplier-Analytics';
 
 export default async function SupplierPage({
   params,

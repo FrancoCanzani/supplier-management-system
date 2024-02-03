@@ -14,13 +14,13 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { taskValidation } from '@/lib/validationSchemas';
-import { SubmitButton } from './submit-Button';
+import { SubmitButton } from './submit-button';
 import { createRef } from 'react';
-import { DataSelector } from '../tables/data-Selector';
 import { Supplier } from '@/lib/types';
 import { useState } from 'react';
 import { addTask } from '@/lib/actions';
 import { useAuth } from '@clerk/nextjs';
+import { DataSelector } from '../tables/data-Selector';
 
 export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
   const [selectedSupplier, setSelectedSupplier] = useState<{

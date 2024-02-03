@@ -1,12 +1,18 @@
 'use server';
 
 import { Supplier } from './database/schemas/supplierSchema';
-import { supplierValidation, taskValidation } from './validationSchemas';
+import {
+  feedbackValidation,
+  supplierValidation,
+  taskValidation,
+} from './validationSchemas';
 import dbConnect from './database/dbConnect';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { z } from 'zod';
 import { NewTask } from './types';
+import { Resend } from 'resend';
+import { FeedbackEmailTemplate } from '@/components/email-template';
 
 type Supplier = z.infer<typeof supplierValidation>;
 type TaskProps = z.infer<typeof taskValidation>;
@@ -263,6 +269,34 @@ async function addTask(taskData: NewTask, userId: string) {
   }
 }
 
+async function sendFeedback(formData: FormData) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+  const feedback = {
+    email: formData.get('email')?.toString(),
+    message: formData.get('message')?.toString(),
+  };
+
+  const validation = feedbackValidation.safeParse(feedback);
+  if (!validation.success) {
+    return {
+      error: 'Validation failed',
+      issues: validation.error.issues,
+    };
+  }
+
+  const { data } = await resend.emails.send({
+    from: 'Supplify <onboarding@resend.dev>',
+    to: ['francocanzani@gmail.com'],
+    subject: 'New Feedback Received',
+    react: FeedbackEmailTemplate({
+      email: validation.data.email,
+      message: validation.data.message,
+    }),
+    text: 'Your plain text version here',
+  });
+}
+
 export {
   addSupplier,
   deleteSupplier,
@@ -272,4 +306,5 @@ export {
   updateTaskPriority,
   updateSupplierStatus,
   updateTask,
+  sendFeedback,
 };

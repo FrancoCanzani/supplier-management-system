@@ -45,4 +45,17 @@ const taskValidation = object({
   status: z.string().optional(),
 });
 
-export { supplierValidation, taskValidation };
+const feedbackValidation = object({
+  email: z
+    .string({
+      required_error: 'Email is required',
+    })
+    .email(),
+  message: z
+    .string({
+      required_error: 'Message is required',
+    })
+    .min(3, 'Message must be at least 3 characters'),
+});
+
+export { supplierValidation, taskValidation, feedbackValidation };
