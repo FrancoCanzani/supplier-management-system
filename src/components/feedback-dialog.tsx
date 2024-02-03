@@ -42,7 +42,7 @@ export default function FeedbackDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline' className='px-7 ml-3 gap-x-4'>
+        <Button variant='outline' className='px-7 ml-3n gap-x-4'>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='1.3em'

@@ -19,7 +19,7 @@ export default function SupplierInformation({
           href={`/dashboard/suppliers/edit/${supplier.id}`}
           className='inline-flex font-medium text-sm lg:text-base items-center rounded-md ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 justify-start'
         >
-          Edit Supplier
+          Edit
         </Link>
       </div>
       <section className='bg-gray-50 rounded-md border shadow-sm gap-y-4 p-6 text-sm'>
@@ -130,7 +130,7 @@ export default function SupplierInformation({
             <h3 className='text-lg font-semibold tracking-tight mb-3 w-full'>
               Notes
             </h3>
-            <p>{supplier.notes}</p>
+            <p className='overflow-clip'>{supplier.notes}</p>
           </>
         )}
       </section>
