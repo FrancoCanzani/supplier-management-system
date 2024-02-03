@@ -19,7 +19,7 @@ import {
 } from '@tanstack/react-table';
 
 import { SuppliersTableToolbar } from './suppliers-table-toolbar';
-import { DataTable } from './data-Table';
+import { DataTable } from './data-table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

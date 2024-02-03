@@ -20,7 +20,7 @@ import { Supplier } from '@/lib/types';
 import { useState } from 'react';
 import { addTask } from '@/lib/actions';
 import { useAuth } from '@clerk/nextjs';
-import { DataSelector } from '../tables/data-Selector';
+import { DataSelector } from '../tables/data-selector';
 
 export function NewTaskForm({ suppliers }: { suppliers: Supplier[] }) {
   const [selectedSupplier, setSelectedSupplier] = useState<{

@@ -18,7 +18,7 @@ import {
   Table as T,
 } from '@tanstack/react-table';
 import { TasksTableToolbar } from './tasks-table-toolbar';
-import { DataTable } from './data-Table';
+import { DataTable } from './data-table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -2,7 +2,7 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Row } from '@tanstack/react-table';
-import EditTaskForm from '../forms/edit-Task-Form';
+import EditTaskForm from '../forms/edit-task-form';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
 import {

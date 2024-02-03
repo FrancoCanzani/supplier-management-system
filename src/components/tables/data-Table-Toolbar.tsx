@@ -4,8 +4,8 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { DataTableViewOptions } from './data-Table-View-Options';
-import { DataTableFacetedFilter } from './data-Table-Faceted-Filter';
+import { DataTableViewOptions } from './data-table-view-options';
+import { DataTableFacetedFilter } from './data-table-faceted-filter';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
