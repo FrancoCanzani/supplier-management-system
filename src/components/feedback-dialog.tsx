@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { SubmitButton } from './forms/submit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from './ui/textarea';
@@ -16,6 +15,7 @@ import { feedbackValidation } from '@/lib/validationSchemas';
 import { toast } from 'sonner';
 import { createRef } from 'react';
 import { sendFeedback } from '@/lib/actions';
+import { SubmitButton } from './forms/submit-button';
 
 export default function FeedbackDialog() {
   const ref = createRef<HTMLFormElement>();
