@@ -1,7 +1,7 @@
 'use client';
 
 import { Separator } from '@/components/ui/separator';
-import { NewSupplierForm } from '@/components/forms/new-Supplier-Form';
+import { NewSupplierForm } from '@/components/forms/new-supplier-form';
 
 export default function NewSupplier() {
   return (

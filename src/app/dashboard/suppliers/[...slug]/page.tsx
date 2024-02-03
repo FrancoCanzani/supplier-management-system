@@ -7,7 +7,7 @@ import { TasksTable } from '@/components/tables/tasks-Table';
 import { supplierValidation } from '@/lib/validationSchemas';
 import z from 'zod';
 import SupplierInformation from '@/components/supplier-information';
-import SupplierAnalytics from '@/components/supplier-Analytics';
+import SupplierAnalytics from '@/components/supplier-analytics';
 
 export default async function SupplierPage({
   params,
