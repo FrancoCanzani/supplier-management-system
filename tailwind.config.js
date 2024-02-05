@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 
+import { withUt } from 'uploadthing/tw';
+
 const colors = require('tailwindcss/colors');
-module.exports = {
+
+export default withUt({
   content: [
     './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/@tremor/**/*.{js,ts,jsx,tsx}',
@@ -129,4 +132,4 @@ module.exports = {
     },
   ],
   plugins: [require('@headlessui/tailwindcss')],
-};
+});

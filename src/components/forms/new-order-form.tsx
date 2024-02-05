@@ -23,6 +23,7 @@ import { DataSelector } from './data-selector';
 import { currencies, incoterms } from '@/lib/data';
 import { addOrder } from '@/lib/actions';
 import { OrderData } from '@/lib/types';
+import { UploadDropzone } from '@/lib/uploadthing';
 
 export function NewOrderForm({ suppliers }: { suppliers: Supplier[] }) {
   const [selectedSupplier, setSelectedSupplier] = useState<{
@@ -165,8 +166,46 @@ export function NewOrderForm({ suppliers }: { suppliers: Supplier[] }) {
         </div>
       </div>
       <div>
+        <Label htmlFor='file'>File (spreadsheet)</Label>
+        <UploadDropzone
+          appearance={{
+            button:
+              'rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-9 rounded-md px-3 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 ut-ready:bg-green-500 ut-ready:hover:bg-green-600 ut-uploading:cursor-not-allowed ut-uploading:bg-green-600 after:bg-green-700',
+            container: 'py-5',
+            allowedContent: '',
+          }}
+          endpoint='spreadsheetUploader'
+          onClientUploadComplete={(res) => {
+            // Do something with the response
+            console.log('Files: ', res);
+            toast.success('Upload Completed');
+          }}
+          onUploadError={(error: Error) => {
+            // Do something with the error.
+            toast.error(`ERROR! ${error.message}`);
+          }}
+        />
+      </div>
+      <div>
         <Label htmlFor='comments'>Comments</Label>
         <Textarea id='comments' name='comments' />
+      </div>
+
+      <div className='space-y-1'>
+        <p className='text-sm text-gray-600'>
+          ▪️ You will be able to add the products later.
+        </p>
+        <p className='text-gray-600 text-sm'>
+          ▪️{' '}
+          <a
+            className='underline'
+            href='/public/purchase-order-template.xlsx'
+            download
+          >
+            Download
+          </a>{' '}
+          a purchase order template.
+        </p>
       </div>
       <SubmitButton />
     </form>
