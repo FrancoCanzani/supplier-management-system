@@ -26,8 +26,8 @@ interface ComboboxProps {
 }
 
 export function DataSelector({ data, placeholder, onSelect }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('');
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,13 +36,13 @@ export function DataSelector({ data, placeholder, onSelect }: ComboboxProps) {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[350px] md:w-[400px] px-2 overflow-hidden text-clip justify-start capitalize'
+          className='px-2 overflow-hidden text-clip justify-start capitalize'
         >
           <ChevronsUpDown className='mx-1 h-4 w-4 shrink-0 opacity-50' />
           {value.length ? value : 'Select supplier...'}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-[350px] md:w-[400px] p-0'>
+      <PopoverContent className='popover-content-width-same-as-its-trigger p-0'>
         <Command>
           <CommandInput placeholder='Search supplier...' />
           <CommandEmpty>No supplier found.</CommandEmpty>

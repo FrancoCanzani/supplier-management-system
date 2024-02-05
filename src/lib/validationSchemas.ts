@@ -1,5 +1,7 @@
 import { object, z } from 'zod';
 
+// An input field returns an empty string even when no input is provided. The required_error property in Zod triggers only if the field is not registered, not when it’s an empty string.
+
 const supplierValidation = object({
   _id: z.string().optional(),
   id: z.string().optional(),
@@ -58,4 +60,25 @@ const feedbackValidation = object({
     .min(3, 'Message must be at least 3 characters'),
 });
 
-export { supplierValidation, taskValidation, feedbackValidation };
+const orderValidation = z.object({
+  supplier: z
+    .string({
+      required_error: 'Select a supplier',
+    })
+    .min(1, 'Select a supplier'),
+  supplierId: z.string().optional(),
+  id: z.string().min(1, 'Enter an order number or Id'),
+  label: z.string().optional(),
+  crd: z.string().optional(),
+  priority: z.string().optional(),
+  comments: z.string().optional(),
+  incoterm: z.string().min(1, 'Select an incoterm'),
+  currency: z.string().min(1, 'Select a currency'),
+});
+
+export {
+  supplierValidation,
+  taskValidation,
+  feedbackValidation,
+  orderValidation,
+};

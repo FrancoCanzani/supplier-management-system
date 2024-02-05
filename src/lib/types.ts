@@ -38,4 +38,16 @@ type Task = {
   __v: number;
 };
 
-export type { Supplier, NewTask, Task };
+type OrderData = {
+  supplier: string;
+  supplierId?: string;
+  id: string;
+  label?: string;
+  crd?: string;
+  priority?: string;
+  comments?: string;
+  incoterm: string;
+  currency: string;
+};
+
+export type { Supplier, NewTask, Task, OrderData };

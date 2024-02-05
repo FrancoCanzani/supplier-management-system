@@ -5,17 +5,20 @@ import {
   feedbackValidation,
   supplierValidation,
   taskValidation,
+  orderValidation,
 } from './validationSchemas';
 import dbConnect from './database/dbConnect';
 import { revalidatePath } from 'next/cache';
 import { Task } from './database/schemas/taskSchema';
 import { z } from 'zod';
-import { NewTask } from './types';
+import { NewTask, OrderData } from './types';
 import { Resend } from 'resend';
 import { FeedbackEmailTemplate } from '@/components/email-template';
+import { Order } from './database/schemas/orderSchema';
 
 type Supplier = z.infer<typeof supplierValidation>;
 type TaskProps = z.infer<typeof taskValidation>;
+type Order = z.infer<typeof orderValidation>;
 
 async function addSupplier(formData: FormData, userId: string) {
   const db = await dbConnect();
@@ -58,12 +61,11 @@ async function addSupplier(formData: FormData, userId: string) {
   try {
     const newSupplier = new Supplier(supplierData);
     const savedSupplier = await newSupplier.save();
-
+    revalidatePath(`/dashboard/suppliers`);
     return {
       success: true,
       data: savedSupplier,
     };
-    revalidatePath(`/dashboard/suppliers`);
   } catch (error) {
     return {
       error: 'Error adding supplier. Please try again!',
@@ -295,6 +297,33 @@ async function sendFeedback(formData: FormData) {
     }),
     text: 'Your plain text version here',
   });
+}
+
+export async function addOrder(orderData: OrderData, userId: string) {
+  const db = await dbConnect();
+
+  const validation = orderValidation.safeParse(orderData);
+  if (!validation.success) {
+    return {
+      error: 'Validation failed',
+      issues: validation.error.issues,
+    };
+  }
+
+  try {
+    const newOrder = new Order({ ...orderData, userId });
+    const savedOrder = await newOrder.save();
+    revalidatePath('/dashboard/orders');
+    return {
+      success: true,
+      data: savedOrder,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      error: 'Error adding order. Please try again!',
+    };
+  }
 }
 
 export {

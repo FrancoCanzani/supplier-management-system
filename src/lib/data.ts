@@ -43,7 +43,15 @@ const priorities = [
 ];
 
 const mainPorts = {
-  china: ['Shanghai', 'Shenzhen', 'Ningbo', 'Tianjin', 'Qingdao', 'Xiamen', 'Fuzhou'],
+  china: [
+    'Shanghai',
+    'Shenzhen',
+    'Ningbo',
+    'Tianjin',
+    'Qingdao',
+    'Xiamen',
+    'Fuzhou',
+  ],
   indonesia: ['Jakarta', 'Surabaya', 'Belawan', 'Makassar', 'Semarang'],
   vietnam: ['Ho Chi Minh City', 'Hai Phong', 'Da Nang', 'Qui Nhon', 'Vung Tau'],
   malaysia: ['Port Klang', 'Penang', 'Johor', 'Kuantan', 'Bintulu'],
@@ -64,4 +72,22 @@ const incoterms = [
   'Delivered Duty Paid (DDP)',
 ];
 
-export { statuses, priorities, mainPorts, incoterms };
+const currencies = [
+  'United States Dollar (USD)',
+  'Euro (EUR)',
+  'Japanese Yen (JPY)',
+  'British Pound Sterling (GBP)',
+  'Australian Dollar (AUD)',
+  'Canadian Dollar (CAD)',
+  'Swiss Franc (CHF)',
+  'Chinese Yuan Renminbi (CNY)',
+  'Swedish Krona (SEK)',
+  'New Zealand Dollar (NZD)',
+  'Mexican Peso (MXN)',
+  'Singapore Dollar (SGD)',
+  'Hong Kong Dollar (HKD)',
+  'Norwegian Krone (NOK)',
+  'South Korean Won (KRW)',
+];
+
+export { statuses, priorities, mainPorts, incoterms, currencies };

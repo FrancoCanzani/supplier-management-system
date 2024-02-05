@@ -42,12 +42,16 @@ export default function FeedbackDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant='outline' className='px-7 ml-3n gap-x-4'>
+        <Button
+          variant={'ghost'}
+          className='inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-slate-950 dark:focus-visible:ring-slate-300 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50 h-10 px-4 py-2 w-full justify-start'
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             width='1.3em'
             height='1em'
             viewBox='0 0 31 24'
+            className='mr-2 h-4 w-4'
           >
             <path
               fill='currentColor'

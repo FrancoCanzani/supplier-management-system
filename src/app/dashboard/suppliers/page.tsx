@@ -6,7 +6,7 @@ import { auth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { SuppliersTable } from '@/components/tables/suppliers-table';
 
-export default async function Page() {
+export default async function Suppliers() {
   const { userId } = auth();
 
   async function getAllSuppliers(userId: string) {
