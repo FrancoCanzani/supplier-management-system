@@ -11,6 +11,7 @@ export const ourFileRouter = {
   spreadsheetUploader: f({
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': {
       maxFileSize: '64MB',
+      maxFileCount: 1,
     },
   })
     // Set permissions and file types for this FileRoute
