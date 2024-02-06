@@ -22,12 +22,28 @@ const orderSchema = new mongoose.Schema({
     enum: ['high', 'medium', 'low'],
     default: 'low',
   },
+  file: {
+    name: String,
+    size: Number,
+    key: String,
+    serverData: {
+      uploadedBy: String,
+    },
+    url: String,
+  },
   comments: String,
   incoterm: String,
   currency: String,
   userId: {
     type: String,
     required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
   },
 });
 

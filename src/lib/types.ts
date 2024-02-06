@@ -48,6 +48,16 @@ type OrderData = {
   comments?: string;
   incoterm: string;
   currency: string;
+  file: {
+    name: string;
+    size: number;
+    key: string;
+    serverData: {
+      uploadedBy: string;
+    };
+    url: string;
+  }[];
+  createdAt?: Date;
+  updatedAt?: Date;
 };
-
 export type { Supplier, NewTask, Task, OrderData };

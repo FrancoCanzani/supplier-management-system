@@ -74,6 +74,17 @@ const orderValidation = z.object({
   comments: z.string().optional(),
   incoterm: z.string().min(1, 'Select an incoterm'),
   currency: z.string().min(1, 'Select a currency'),
+  file: z.array(
+    z.object({
+      name: z.string(),
+      size: z.number(),
+      key: z.string(),
+      serverData: z.object({
+        uploadedBy: z.string(),
+      }),
+      url: z.string(),
+    })
+  ),
 });
 
 export {

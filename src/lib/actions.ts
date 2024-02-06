@@ -15,6 +15,9 @@ import { NewTask, OrderData } from './types';
 import { Resend } from 'resend';
 import { FeedbackEmailTemplate } from '@/components/email-template';
 import { Order } from './database/schemas/orderSchema';
+import { UTApi } from 'uploadthing/server';
+
+const utapi = new UTApi();
 
 type Supplier = z.infer<typeof supplierValidation>;
 type TaskProps = z.infer<typeof taskValidation>;
@@ -326,6 +329,15 @@ export async function addOrder(orderData: OrderData, userId: string) {
   }
 }
 
+async function deleteFiles(keys: string | string[]) {
+  try {
+    await utapi.deleteFiles(keys);
+  } catch (error) {
+    console.error('Error deleting files:', error);
+    throw error;
+  }
+}
+
 export {
   addSupplier,
   deleteSupplier,
@@ -336,4 +348,5 @@ export {
   updateSupplierStatus,
   updateTask,
   sendFeedback,
+  deleteFiles,
 };
