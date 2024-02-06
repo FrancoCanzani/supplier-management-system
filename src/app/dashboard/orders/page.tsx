@@ -3,7 +3,8 @@ import { Separator } from '@/components/ui/separator';
 import { auth } from '@clerk/nextjs';
 import dbConnect from '@/lib/database/dbConnect';
 import { Order } from '@/lib/database/schemas/orderSchema';
-import { OrderData } from '@/lib/types';
+import { OrdersTable } from '@/components/tables/orders-table';
+import { columns } from './columns';
 
 export default async function Orders() {
   const { userId } = auth();
@@ -55,10 +56,7 @@ export default async function Orders() {
           </Link>
         </div>
         <Separator />
-        {userOrdersResult.data &&
-          userOrdersResult.data.map((order: OrderData) => (
-            <span key={order._id}>{order.supplier}</span>
-          ))}
+        <OrdersTable data={userOrdersResult.data ?? []} columns={columns} />
       </div>
     );
   }

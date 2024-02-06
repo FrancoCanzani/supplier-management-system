@@ -60,6 +60,7 @@ export function NewOrderForm({ suppliers }: { suppliers: Supplier[] }) {
       incoterm: formData.get('incoterm')?.toString() ?? '',
       currency: formData.get('currency')?.toString() ?? '',
       file: uploadedFile[0],
+      status: 'open',
     };
 
     const validation = orderValidation.safeParse(orderData);

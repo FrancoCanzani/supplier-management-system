@@ -39,7 +39,7 @@ type Task = {
 };
 
 type OrderData = {
-  _id: string;
+  _id?: string;
   supplier: string;
   supplierId?: string;
   id: string;
@@ -58,6 +58,7 @@ type OrderData = {
     };
     url: string;
   };
+  status: 'open' | 'in progress' | 'closed' | 'cancelled';
   createdAt?: Date;
   updatedAt?: Date;
 };
