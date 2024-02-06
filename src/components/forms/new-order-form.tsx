@@ -59,7 +59,7 @@ export function NewOrderForm({ suppliers }: { suppliers: Supplier[] }) {
       comments: formData.get('comments')?.toString() ?? '',
       incoterm: formData.get('incoterm')?.toString() ?? '',
       currency: formData.get('currency')?.toString() ?? '',
-      file: uploadedFile,
+      file: uploadedFile[0],
     };
 
     const validation = orderValidation.safeParse(orderData);
@@ -73,6 +73,7 @@ export function NewOrderForm({ suppliers }: { suppliers: Supplier[] }) {
           toast.error(response.error);
         } else {
           toast.success('Order saved successfully!');
+          setUploadedFile([]);
           if (ref.current) {
             ref.current.reset();
           }

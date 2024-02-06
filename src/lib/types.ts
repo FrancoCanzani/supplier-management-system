@@ -39,6 +39,7 @@ type Task = {
 };
 
 type OrderData = {
+  _id: string;
   supplier: string;
   supplierId?: string;
   id: string;
@@ -56,7 +57,7 @@ type OrderData = {
       uploadedBy: string;
     };
     url: string;
-  }[];
+  };
   createdAt?: Date;
   updatedAt?: Date;
 };
