@@ -274,6 +274,8 @@ async function addTask(taskData: NewTask, userId: string) {
   }
 }
 
+// feedback
+
 async function sendFeedback(formData: FormData) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -400,6 +402,51 @@ async function updateOrderPriority(
   }
 }
 
+async function updateOrder(orderData: OrderData) {
+  const db = await dbConnect();
+
+  const { _id, id, label, incoterm, currency, crd, file, comments } = orderData;
+
+  const existingOrder = await Order.findById(_id);
+
+  if (!existingOrder) {
+    return {
+      error: 'Order not found for update.',
+    };
+  }
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          id,
+          label,
+          incoterm,
+          currency,
+          crd,
+          file,
+          comments,
+        },
+      },
+      { new: true, upsert: true }
+    );
+
+    revalidatePath('/dashboard/orders');
+
+    return {
+      success: true,
+      data: updatedOrder,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      error: 'Error updating order.',
+    };
+  }
+}
+
 export {
   addSupplier,
   deleteSupplier,
@@ -414,4 +461,5 @@ export {
   deleteOrder,
   updateOrderStatus,
   updateOrderPriority,
+  updateOrder,
 };

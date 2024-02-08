@@ -41,8 +41,6 @@ export default function EditSupplierForm({ supplier }: { supplier: Supplier }) {
     status: supplier.status,
   });
 
-  const [isEditing, setIsEditing] = useState(false);
-
   const { userId } = useAuth();
   const ref = createRef<HTMLFormElement>();
 
@@ -57,7 +55,6 @@ export default function EditSupplierForm({ supplier }: { supplier: Supplier }) {
         if (response?.error) {
           toast.error(response.error);
         } else {
-          setIsEditing(false);
           toast.success('Supplier saved successfully!');
           if (ref.current) {
             ref.current.reset();
