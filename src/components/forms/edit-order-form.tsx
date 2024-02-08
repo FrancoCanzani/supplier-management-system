@@ -107,7 +107,7 @@ export default function EditOrderForm({
             name='id'
             type='text'
             minLength={3}
-            value={order.id}
+            value={orderData.id}
             placeholder='W04'
             onChange={(e) => setOrderData({ ...orderData, id: e.target.value })}
           />
@@ -117,7 +117,7 @@ export default function EditOrderForm({
           <Input
             id='label'
             name='label'
-            value={order.label}
+            value={orderData.label}
             placeholder='Summer'
             onChange={(e) =>
               setOrderData({ ...orderData, label: e.target.value })
@@ -139,7 +139,7 @@ export default function EditOrderForm({
           </Label>
           <Select
             name='incoterm'
-            value={order.incoterm}
+            value={orderData.incoterm}
             onValueChange={(e) => setOrderData({ ...orderData, incoterm: e })}
           >
             <SelectTrigger>
@@ -160,7 +160,7 @@ export default function EditOrderForm({
           <Label htmlFor='currency'>Currency*</Label>
           <Select
             name='currency'
-            value={order.currency}
+            value={orderData.currency}
             onValueChange={(e) => setOrderData({ ...orderData, currency: e })}
           >
             <SelectTrigger>
@@ -196,7 +196,7 @@ export default function EditOrderForm({
           <Label htmlFor='priority'>Priority</Label>
           <Select
             name='priority'
-            value={order.priority}
+            value={orderData.priority}
             onValueChange={(e) => setOrderData({ ...orderData, priority: e })}
           >
             <SelectTrigger>
@@ -270,7 +270,7 @@ export default function EditOrderForm({
         <Textarea
           id='comments'
           name='comments'
-          value={order.comments}
+          value={orderData.comments}
           onChange={(e) =>
             setOrderData({ ...orderData, comments: e.target.value })
           }
