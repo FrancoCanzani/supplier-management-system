@@ -85,6 +85,7 @@ export function SuppliersTableRowActions<TData>({
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          className='text-red-600 focus:text-red-500'
           onClick={() => supplier._id && deleteSupplier(supplier._id)}
         >
           Delete

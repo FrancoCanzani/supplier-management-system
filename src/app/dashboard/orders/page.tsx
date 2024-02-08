@@ -27,7 +27,6 @@ export default async function Orders() {
 
   if (userId) {
     const userOrdersResult = await getAllOrders(userId);
-    console.log(userOrdersResult.data);
 
     return (
       <div className='space-y-6 px-10 pb-16'>

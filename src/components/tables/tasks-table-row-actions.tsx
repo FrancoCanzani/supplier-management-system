@@ -101,7 +101,10 @@ export function TasksTableRowActions<TData>({
             </DropdownMenuSubContent>
           </DropdownMenuSub>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => task._id && deleteTask(task._id)}>
+          <DropdownMenuItem
+            className='text-red-600 focus:text-red-500'
+            onClick={() => task._id && deleteTask(task._id)}
+          >
             Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

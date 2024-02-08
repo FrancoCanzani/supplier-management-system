@@ -302,6 +302,8 @@ async function sendFeedback(formData: FormData) {
   });
 }
 
+// orders
+
 export async function addOrder(orderData: OrderData, userId: string) {
   const db = await dbConnect();
 
@@ -338,6 +340,66 @@ async function deleteFiles(keys: string | string[]) {
   }
 }
 
+async function deleteOrder(_id: string, id: string) {
+  const db = await dbConnect();
+
+  try {
+    await Order.deleteOne({ _id: _id });
+    revalidatePath('/dashboard');
+    return { message: `Deleted order ${id}` };
+  } catch (e) {
+    return { message: 'Failed to delete order' };
+  }
+}
+
+async function updateOrderStatus(_id: string, id: string, newStatus: string) {
+  const db = await dbConnect();
+
+  try {
+    const orderToUpdate = await Order.findOne({ _id: _id });
+
+    if (!orderToUpdate) {
+      return { message: 'Order not found.' };
+    }
+
+    orderToUpdate.status = newStatus;
+    await orderToUpdate.save();
+
+    revalidatePath('/dashboard/orders');
+    return {
+      message: `Updated order ${id} status to ${orderToUpdate.status}`,
+    };
+  } catch (e) {
+    return { message: 'Failed to update order status.' };
+  }
+}
+
+async function updateOrderPriority(
+  _id: string,
+  id: string,
+  newPriority: string
+) {
+  const db = await dbConnect();
+
+  try {
+    const orderToUpdate = await Order.findOne({ _id: _id });
+
+    if (!orderToUpdate) {
+      return { message: 'Order not found.' };
+    }
+
+    orderToUpdate.priority = newPriority;
+    await orderToUpdate.save();
+
+    revalidatePath('/dashboard/orders');
+    return {
+      message: `Updated order ${id} status to ${orderToUpdate.priority}`,
+    };
+  } catch (e) {
+    return { message: 'Failed to update order priority.' };
+  }
+}
+
 export {
   addSupplier,
   deleteSupplier,
@@ -349,4 +411,7 @@ export {
   updateTask,
   sendFeedback,
   deleteFiles,
+  deleteOrder,
+  updateOrderStatus,
+  updateOrderPriority,
 };

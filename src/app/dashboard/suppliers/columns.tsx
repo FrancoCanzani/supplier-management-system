@@ -49,7 +49,7 @@ export const columns: ColumnDef<Supplier>[] = [
     cell: ({ row }) => (
       <Link
         href={`/dashboard/suppliers/${row.original.id}`}
-        className='capitalize font-semibold hover:underline max-w-[500px]'
+        className='capitalize max-w-[200px] truncate font-semibold hover:underline'
       >
         {row.original.name}
       </Link>

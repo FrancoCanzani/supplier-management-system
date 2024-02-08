@@ -7,6 +7,7 @@ import { DrawingPinIcon, DrawingPinFilledIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { OrderData } from '@/lib/types';
 import { statuses, priorities } from '@/lib/data';
+import { OrdersTableRowActions } from '@/components/tables/orders-table-row-actions';
 
 export const columns: ColumnDef<OrderData>[] = [
   {
@@ -43,14 +44,18 @@ export const columns: ColumnDef<OrderData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Supplier' />
     ),
-    cell: ({ row }) => (
-      <Link
-        href={`/dashboard/suppliers/${row.original.supplierId}`}
-        className='capitalize font-semibold hover:underline max-w-[500px]'
-      >
-        {row.original.supplier}
-      </Link>
-    ),
+    cell: ({ row }) => {
+      return (
+        <div className='flex space-x-2'>
+          <Link
+            href={`/dashboard/suppliers/${row.original.supplierId}`}
+            className='capitalize max-w-[200px] truncate font-semibold hover:underline'
+          >
+            {row.original.supplier}
+          </Link>
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'label',
@@ -142,8 +147,8 @@ export const columns: ColumnDef<OrderData>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  //   {
-  //     id: 'actions',
-  //     cell: ({ row }) => <SuppliersTableRowActions row={row} />,
-  //   },
+  {
+    id: 'actions',
+    cell: ({ row }) => <OrdersTableRowActions row={row} />,
+  },
 ];

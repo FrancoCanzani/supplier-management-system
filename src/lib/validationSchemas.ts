@@ -61,6 +61,7 @@ const feedbackValidation = object({
 });
 
 const orderValidation = z.object({
+  _id: z.string().optional(),
   supplier: z
     .string({
       required_error: 'Select a supplier',
@@ -69,20 +70,23 @@ const orderValidation = z.object({
   supplierId: z.string().optional(),
   id: z.string().min(1, 'Enter an order number or Id'),
   label: z.string().optional(),
-  crd: z.string().optional(),
+  crd: z.string().or(z.date()).optional(),
   priority: z.string().optional(),
   comments: z.string().optional(),
   incoterm: z.string().min(1, 'Select an incoterm'),
   currency: z.string().min(1, 'Select a currency'),
-  file: z.object({
-    name: z.string(),
-    size: z.number(),
-    key: z.string(),
-    serverData: z.object({
-      uploadedBy: z.string(),
-    }),
-    url: z.string(),
-  }),
+  file: z
+    .object({
+      name: z.string(),
+      size: z.number(),
+      key: z.string(),
+      serverData: z.object({
+        uploadedBy: z.string(),
+      }),
+      url: z.string(),
+    })
+    .optional(),
+  status: z.string().optional(),
 });
 
 export {
